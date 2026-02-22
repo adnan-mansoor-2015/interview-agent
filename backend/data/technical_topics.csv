@@ -1,0 +1,131 @@
+Priority,Category,Topic,Sub-Topic,Sub-Sub-Topic / Granular Depth Point
+1,Language Internals,Golang,Concurrency,The G-M-P Scheduler (Goroutine-Machine-Processor)
+1,Language Internals,Golang,Concurrency,Work-Stealing Algorithm in the Go Runtime
+1,Language Internals,Golang,Concurrency,Network Poller (epoll/kqueue) interaction with Goroutines
+1,Language Internals,Golang,Concurrency,Preemption (Synchronous vs. Asynchronous)
+1,Language Internals,Golang,Memory,Escape Analysis (Stack vs. Heap allocation rules)
+1,Language Internals,Golang,Memory,TCMalloc-based memory allocator (mspan, mcache, mcentral)
+1,Language Internals,Golang,Memory,Garbage Collection: Tri-color Mark & Sweep
+1,Language Internals,Golang,Memory,Garbage Collection: The Write Barrier mechanism
+1,Language Internals,Golang,Memory,Garbage Collection: Pacer and Termination phases
+1,Language Internals,Golang,Data Structures,Slice Header (Pointer, Len, Cap) and Growth logic
+1,Language Internals,Golang,Data Structures,Map Internals: HMAP, BMAP, and Bucket Overflow
+1,Language Internals,Golang,Data Structures,Map Evacuation during incremental growth
+1,Language Internals,Golang,Types,Interface values (eface vs iface) and itab lookups
+1,Language Internals,Golang,Types,Reflection: The cost of Type-assertion vs. reflect package
+1,Language Internals,Golang,Standard Lib,Context Propagation (withTimeout, withCancel)
+1,Language Internals,Golang,Standard Lib,sync.Pool: Reducing GC pressure for high-throughput
+1,Language Internals,Golang,Standard Lib,Atomic Operations vs Mutex (CAS - Compare and Swap)
+1,Language Internals,Python,Execution,The Global Interpreter Lock (GIL) and bytecode execution
+1,Language Internals,Python,Execution,AsyncIO Event Loop: Task vs Future vs Coroutine
+1,Language Internals,Python,Execution,The 'Awaitable' protocol and __await__ method
+1,Language Internals,Python,Memory,Reference Counting and the Cycle Detector
+1,Language Internals,Python,Memory,Generational Garbage Collection (Gen 0, 1, 2)
+1,Language Internals,Python,Memory,Interning (Small integers and String interning)
+1,Language Internals,Python,Advanced,Metaclasses and Type-creation hooks
+1,Language Internals,Python,Advanced,Method Resolution Order (MRO) and C3 Linearization
+1,Language Internals,Python,Advanced,Context Managers (__enter__ / __exit__) and scope
+1,AI Productivity,Prompt Engineering,Core Patterns,Zero-shot vs Few-shot Prompting for code generation
+1,AI Productivity,Prompt Engineering,Core Patterns,Chain-of-Thought (CoT) for logical reasoning in refactoring
+1,AI Productivity,Prompt Engineering,Core Patterns,System Prompts: Defining Persona and Constraints
+1,AI Productivity,Prompt Engineering,Advanced,Tree-of-Thought (ToT) for architectural decision making
+1,AI Productivity,Prompt Engineering,Advanced,Few-shot providing 'Negative Examples' (What NOT to code)
+1,AI Productivity,AI SDLC,Refactoring,Prompting for 'Idiomatic' conversion (Java to Go)
+1,AI Productivity,AI SDLC,Refactoring,Using AI to identify Big-O complexity in nested loops
+1,AI Productivity,AI SDLC,Testing,Prompting for 'Boundary Value Analysis' test cases
+1,AI Productivity,AI SDLC,Testing,Generating 'Fuzz Testing' inputs via LLM
+1,AI Productivity,AI SDLC,Verification,Differential Testing (Comparing AI output vs Legacy output)
+1,AI Productivity,AI SDLC,Verification,Property-based testing generation (Hypothesis/Gopter)
+1,AI Productivity,AI SDLC,Security,Detecting AI 'Hallucinations' in cryptographical code
+1,AI Productivity,AI SDLC,Security,Identifying PII leaks in code snippets sent to LLMs
+1,AI Productivity,AI SDLC,Workflow,Context Window Management (Chunking files for AI review)
+1,Distributed Systems,Databases,B-Tree,Internal vs Leaf Nodes and Pointer chasing
+1,Distributed Systems,Databases,B-Tree,B-Tree depth and its impact on Disk I/O
+1,Distributed Systems,Databases,LSM-Trees,SSTables and Memtables (Log-Structured Merge)
+1,Distributed Systems,Databases,LSM-Trees,Write Amplification vs Read Amplification
+1,Distributed Systems,Databases,LSM-Trees,Bloom Filters for reducing unnecessary Disk lookups
+1,Distributed Systems,Databases,Transactions,WAL (Write-Ahead Logging) and Durability
+1,Distributed Systems,Databases,Transactions,MVCC (Multi-Version Concurrency Control)
+1,Distributed Systems,Databases,Isolation,Dirty Reads vs Non-repeatable Reads vs Phantoms
+1,Distributed Systems,Databases,Isolation,Write Skew in Snapshot Isolation
+1,Distributed Systems,Databases,Isolation,Two-Phase Locking (2PL) vs Optimistic Concurrency
+1,Distributed Systems,Databases,Indexing,Clustered vs Non-Clustered Indexes
+1,Distributed Systems,Databases,Indexing,Composite Indexes and the 'Leftmost Prefix' rule
+1,Distributed Systems,Databases,Indexing,Index Bloat and 'Vacuuming' in Postgres
+1,Distributed Systems,Databases,NoSQL,Consistent Hashing and the Ring Architecture
+1,Distributed Systems,Databases,NoSQL,Virtual Nodes and data skew prevention
+1,Distributed Systems,Databases,NoSQL,Quorum consistency (R + W > N)
+1,Distributed Systems,Databases,NoSQL,Gossip Protocol for node membership
+2,Distributed Systems,Messaging,Kafka,The Log-Append storage model
+2,Distributed Systems,Messaging,Kafka,Zero-Copy data transfer (mmap and sendfile)
+2,Distributed Systems,Messaging,Kafka,Partitioning and Consumer Group Rebalancing
+2,Distributed Systems,Messaging,Kafka,Incremental Cooperative Rebalancing
+2,Distributed Systems,Messaging,Kafka,Log Compaction and the Cleaner thread
+2,Distributed Systems,Messaging,Kafka,ISR (In-Sync Replicas) and High Watermarks
+2,Distributed Systems,Messaging,Kafka,Exactly-Once Semantics (EOS) and Transactions
+2,Distributed Systems,Messaging,Kafka,The Controller Node and Leader Election
+2,Distributed Systems,Caching,Strategies,Cache-Aside vs Write-Through vs Write-Back
+2,Distributed Systems,Caching,Invalidation,TTL-based vs Event-driven invalidation
+2,Distributed Systems,Caching,Anomalies,Cache Stampede (Thundering Herd) and Leases
+2,Distributed Systems,Caching,Anomalies,Cache Penetration (Bloom Filter solution)
+2,Distributed Systems,Caching,Anomalies,Cache Avalanche (Jitter solution)
+2,Distributed Systems,Scaling,Availability,Circuit Breakers (Open, Closed, Half-Open states)
+2,Distributed Systems,Scaling,Availability,Retries with Exponential Backoff and Jitter
+2,Distributed Systems,Scaling,Availability,Rate Limiting: Token Bucket vs Leaky Bucket
+2,Distributed Systems,Scaling,Consistency,Eventual Consistency vs Strong Consistency
+2,Distributed Systems,Scaling,Consistency,The CAP Theorem: Choosing CP vs AP in failure
+2,Distributed Systems,Scaling,Consistency,PACELC Theorem (Latency vs Consistency)
+2,Networking,Protocols,TCP,The 3-way Handshake and 4-way Teardown
+2,Networking,Protocols,TCP,Slow Start and Congestion Window (CWND)
+2,Networking,Protocols,TCP,Head-of-Line (HOL) Blocking in TCP streams
+2,Networking,Protocols,HTTP,HTTP/1.1 Pipelining vs HTTP/2 Multiplexing
+2,Networking,Protocols,HTTP,Binary Framing Layer in HTTP/2
+2,Networking,Protocols,HTTP,QUIC and HTTP/3 (UDP-based streams)
+2,Networking,Protocols,gRPC,Protobuf Encoding: Varints and Field Tags
+2,Networking,Protocols,gRPC,Unary vs Server Streaming vs Client Streaming vs Bi-di
+2,Networking,TLS,Handshake,TLS 1.2 vs 1.3 (0-RTT Handshake)
+2,Networking,TLS,Certificates,CA Chain, Root Certs, and OCSP Stapling
+2,Networking,L4 vs L7,Load Balancing,Connection Splitting and SSL Termination
+2,Networking,L4 vs L7,Load Balancing,Weighted Round Robin vs Least Connections
+2,Infrastructure,Containers,Docker,Linux Namespaces (PID, Net, Mount, UTS)
+2,Infrastructure,Containers,Docker,Control Groups (Cgroups) and resource limits
+2,Infrastructure,Containers,Docker,UnionFS and Layered Storage (Copy-on-Write)
+2,Infrastructure,K8s,Components,Kube-apiserver, etcd, and the Controller Manager
+2,Infrastructure,K8s,Scheduling,Taints, Tolerations, and Node Affinity
+2,Infrastructure,K8s,Networking,The Pod Network (CNI) and Service Proxy (IPtables/IPVS)
+2,Infrastructure,K8s,Lifecycle,Pod Readiness vs Liveness vs Startup Probes
+2,Infrastructure,K8s,Storage,Persistent Volumes (PV) and Claims (PVC)
+2,Infrastructure,IaC,Terraform,Provider State Management and Locking
+2,Infrastructure,IaC,Terraform,Resource Dependency Graph and Parallelism
+2,Security,Auth,JWT,JWS (Signature) vs JWE (Encryption)
+2,Security,Auth,JWT,Stateless Revocation: Blacklists vs Short TTLs
+2,Security,Auth,OAuth2,Authorization Code Flow with PKCE
+2,Security,Auth,OAuth2,Refresh Token Rotation and Security
+2,Security,AppSec,OWASP,SQL Injection and Prepared Statements
+2,Security,AppSec,OWASP,SSRF (Server-Side Request Forgery) and Metadata APIs
+2,Security,AppSec,OWASP,IDOR (Insecure Direct Object Reference)
+2,Security,Encryption,Symmetric,AES-GCM (Authenticated Encryption)
+2,Security,Encryption,Asymmetric,RSA vs Elliptic Curve (ECDSA)
+2,Security,Encryption,Hashing,Argon2 vs BCrypt (Salt, Cost, Memory hard)
+3,OS Internals,Linux,Filesystem,Inodes, File Descriptors, and Page Cache
+3,OS Internals,Linux,Memory,Virtual Memory, Pages, and TLB (Translation Lookaside Buffer)
+3,OS Internals,Linux,Memory,The OOM Killer (Out of Memory) and Score
+3,OS Internals,Linux,I/O,Standard I/O vs Direct I/O vs AIO
+3,OS Internals,Linux,Syscalls,Context Switching: User Space to Kernel Space
+3,Search,ElasticSearch,Architecture,Shards, Replicas, and the Lucene Index
+3,Search,ElasticSearch,Internals,Inverted Index and Term Frequency (TF-IDF)
+3,Search,ElasticSearch,Internals,Segment Merging and Search visibility
+3,Search,ElasticSearch,Mapping,Dynamic Mapping vs Explicit Mapping
+3,Observability,Tracing,OpenTelemetry,Spans, Context Injection, and Propagation
+3,Observability,Metrics,Prometheus,Counter vs Gauge vs Histogram vs Summary
+3,Observability,Logs,Structured,ELK/Splunk: Indexing strategies for logs
+3,Observability,SLI/SLO,Definitions,Error Budget and Burn Rates
+3,HFT / Performance,Latency,Interrupts,Context Switching cost and CPU Cache Misses
+3,HFT / Performance,Latency,Networking,Kernel Bypass (DPDK / RDMA)
+3,HFT / Performance,Latency,Architecture,Mechanical Sympathy: Designing for CPU L1/L2 Cache
+3,HFT / Performance,Protocols,WebSockets,Handshake Upgrade and Binary Framing
+3,Architecture,Patterns,SOLID,Dependency Inversion vs Dependency Injection
+3,Architecture,Patterns,DDD,Bounded Contexts and Ubiquitous Language
+3,Architecture,Patterns,Microservices,Saga Pattern (Choreography vs Orchestration)
+3,Architecture,Patterns,Microservices,CQRS (Command Query Responsibility Segregation)
+3,Architecture,Patterns,Microservices,Event Sourcing and Replaying Streams
