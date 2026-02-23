@@ -1,418 +1,455 @@
-# AI-Powered Interview Prep Chat Agent
+# AI-Powered Interview Prep Agent
 
-**Version:** 2.0
-**Platform:** Claude Pro Subscription (Anthropic API)
-**Approach:** Multi-Agent Orchestration with Prompt Engineering
+A full-stack conversational interview practice system with **4 specialized AI agents** that coach, question, and evaluate your answers across behavioral, technical, coding, and system design categories. Powered by Google Gemini (with automatic multi-model fallback) and a React chat UI with voice and diagram upload support.
 
 ---
 
-## Overview
-
-A conversational AI interview preparation system using **Claude's multi-agent capabilities** where users interact via **text, speech, or image inputs** in a chat-based interface. The system uses specialized Claude agents for question sourcing and answer evaluation, providing real-time feedback and follow-up questions in an iterative coaching flow.
-
----
-
-## Core Architecture: Multi-Agent Pattern
-
-### Agent Roles
-
-| Agent | Responsibility | Tools/Capabilities |
-|-------|---------------|-------------------|
-| **Question Curator Agent** | Search and retrieve real FAANG interview questions from web sources | Web search, Reddit/Glassdoor scraping, question bank filtering |
-| **Interview Coach Agent** | Conduct the interview, ask follow-ups, probe incomplete answers | Conversational flow, STAR method expertise, probing questions |
-| **Evaluator Agent** | Critically assess answers with scores and detailed feedback | STAR analysis, technical accuracy, diagram critique (vision), rubric-based scoring |
-| **Orchestrator Agent** | Route between agents, maintain session state, manage conversation flow | Session memory, agent coordination |
-
----
-
-## Features
-
-### 1. 💬 Behavioral (STAR Method)
-
-**Question Sourcing:**
-- Amazon Leadership Principles questions
-- Google Leadership Principles (Googleyness) questions
-- Sourced from Reddit, Glassdoor, Blind
-- Unlimited questions with deduplication
-- "Next Question" button for continuous practice
-
-**Interaction:**
-- **Text input:** Multi-line textarea
-- **Speech input:** Browser-based voice recording (Web Speech API)
-- **Interactive coaching:** Follow-up questions if answer is incomplete
-- **STAR method guidance:** Situation, Task, Action, Result
-
-**Evaluation:**
-- Score: 0-10 with breakdown per STAR element
-- Strengths and improvement areas
-- Sample interviewer follow-ups
-- Study recommendations
-
----
-
-### 2. 💻 Technical Knowledge
-
-**Question Sourcing:**
-- Senior Backend Engineer focus areas:
-  - Cloud Architecture (AWS, Azure, GCP)
-  - Object-Oriented Programming
-  - Data Structures & Algorithms
-  - Prompt Engineering
-- Real questions asked at Amazon and FAANG companies
-- Sourced from Glassdoor, Blind, LeetCode Discuss
-
-**Interaction:**
-- Text or speech input
-- Follow-up questions for incomplete answers
-- Probing on: concepts, trade-offs, real-world examples, edge cases
-
-**Evaluation:**
-- Technical accuracy (factual correctness)
-- Depth of knowledge
-- Clarity of communication
-- Practical application
-- Study recommendations
-
----
-
-### 3. 🧩 Problem Solving (Coding Challenges)
-
-**Question Sourcing:**
-- LeetCode problems tagged with FAANG companies
-- HackerRank Interview Preparation Kit
-- Bloomberg, Microsoft, Apple coding questions
-- Difficulty filters: Easy, Medium, Hard
-
-**Format:**
-- Direct links to LeetCode/HackerRank (respects platform ToS)
-- Focus areas highlighted (Hash Maps, Dynamic Programming, etc.)
-
-**Optional Code Review:**
-- Paste your solution for AI review
-- Time/space complexity analysis
-- Code quality feedback
-- Optimization suggestions
-
----
-
-### 4. 🏗️ System Design
-
-**Question Sourcing:**
-- Common FAANG questions (Design Instagram, Twitter, Uber, etc.)
-- Sourced from System Design Primer, Glassdoor, Reddit
-- Scale requirements specified (users, QPS, storage)
-
-**Interaction:**
-- **Upload diagram** as image (Excalidraw, Lucidchart, whiteboard photo)
-- **AI vision analysis:** Claude identifies components, data flow, architecture patterns
-- **Iterative refinement:** Upload revised diagrams based on feedback
-- **Text explanations:** Describe your approach in chat
-
-**Evaluation:**
-- Component selection appropriateness
-- Scalability assessment
-- Reliability and fault tolerance
-- Data consistency (CAP theorem)
-- Diagram clarity
-- Critical feedback on missing elements
-- Improvement suggestions
-
----
-
-## User Experience Flow
-
-### Example: Behavioral Interview
+## Architecture Overview
 
 ```
-👤 USER: Start behavioral interview - Amazon Leadership Principles
-
-🤖 SYSTEM: Activating Question Curator Agent...
-
-📋 Question 1/∞ — Leadership Principle: "Bias for Action"
-"Tell me about a time you had to make a decision with incomplete information."
-
-[🎤 Record Answer] [✍️ Type Answer] [⏭️ Next Question]
-
----
-
-👤 USER: [Records 90-second answer via microphone]
-
-🤖 COACH: Thanks for that response. I can see you faced a tight deadline.
-I'd like to hear more about the SPECIFIC actions you took.
-Can you walk through your decision-making process step-by-step?
-
----
-
-👤 USER: [Provides more detail via text]
-
-🤖 COACH: Excellent detail! One more thing - what was the measurable outcome?
-
----
-
-👤 USER: [Adds result metrics]
-
-[🎯 Evaluate My Answer] [⏭️ Move to Next Question]
-
----
-
-👤 USER: [Clicks Evaluate]
-
-🤖 EVALUATOR:
-📊 Overall Score: 9/10 ✅
-
-STAR Breakdown:
-• Situation: 10/10 — Crystal clear context
-• Task: 9/10 — Your ownership was evident
-• Action: 8/10 — Good detail
-• Result: 10/10 — Love the specific metrics (30% faster delivery)
-
-💪 Strengths:
-- Quantified impact beautifully
-- Showed bias for action under uncertainty
-
-[📝 Next Question] [🔄 Re-attempt]
+Frontend (React :3000)            Backend (FastAPI :8000)
+┌──────────────────────┐         ┌──────────────────────────────────────┐
+│  CategorySelector    │         │  app.py (API routes)                 │
+│  ChatInterface       │  HTTP   │       ↓                              │
+│    ├─ MessageBubble  │ ──────→ │  orchestrator.py (state machine)     │
+│    ├─ InputArea      │         │       ↓                              │
+│    ├─ VoiceRecorder  │         │  ┌─────────────┬────────────────┐    │
+│    └─ ImageUploader  │         │  │ question_    │ interview_     │    │
+│                      │         │  │ curator.py   │ coach.py       │    │
+│  services/api.js     │         │  ├─────────────┼────────────────┤    │
+│  (fetch client)      │         │  │ evaluator.py │ session_       │    │
+│                      │         │  │ (text+vision)│ store.py       │    │
+└──────────────────────┘         │  └─────────────┴────────────────┘    │
+                                 │       ↓                              │
+                                 │  claude_client.py                    │
+                                 │  (Gemini/Claude with model fallback) │
+                                 └──────────────────────────────────────┘
+                                          ↓
+                                 Google Gemini API (primary)
+                                 Anthropic Claude API (fallback)
 ```
 
 ---
 
-## Technical Stack
+## How It Works
 
-### Frontend
-- **Framework:** React (chat-based UI)
-- **Speech Input:** Web Speech API (browser native)
-- **Image Upload:** Drag-and-drop for diagrams
-- **Styling:** Tailwind CSS (dark mode)
+### Session Lifecycle
 
-### Backend
-- **Framework:** FastAPI (Python)
-- **AI:** Anthropic Claude API
-  - Text: `claude-sonnet-4-20250514`
-  - Vision: `claude-3-5-sonnet-20241022` (for diagrams)
-- **Web Search:** Brave Search API (for question sourcing)
-- **Session Storage:** Redis (conversation history)
-
-### Key Dependencies
 ```
-anthropic>=0.39.0
-fastapi>=0.104.0
-redis>=5.0.0
-python-dotenv>=1.0.0
+1. User picks a category (behavioral/technical/coding/system-design)
+2. Question Curator selects a question from CSV banks (or generates via LLM)
+3. User answers via text, voice, or diagram upload
+4. Interview Coach asks follow-up questions until answer is complete
+5. Evaluator scores the answer with category-specific rubrics (0-10)
+6. Repeat with next question
+```
+
+### Phase State Machine (managed by Orchestrator)
+
+```
+question_needed → answering → ready_for_eval → evaluating → question_needed
+                     ↑                                            │
+                     └────────── (next question) ─────────────────┘
 ```
 
 ---
 
-## Project Structure
+## File-by-File Breakdown
 
-```
-interview-agent/
-├── backend/
-│   ├── app.py                      # FastAPI entry point
-│   ├── config.py                   # Environment configuration
-│   ├── agents/
-│   │   ├── __init__.py
-│   │   ├── orchestrator.py         # Main agent coordinator
-│   │   ├── question_curator.py     # Question sourcing agent
-│   │   ├── interview_coach.py      # Follow-up question agent
-│   │   └── evaluator.py            # Scoring and feedback agent
-│   ├── prompts/
-│   │   ├── curator_prompts.py      # Question curator system prompts
-│   │   ├── coach_prompts.py        # Interview coach prompts
-│   │   └── evaluator_prompts.py    # Evaluation rubrics
-│   ├── routes/
-│   │   ├── chat.py                 # Chat message endpoint
-│   │   ├── session.py              # Session management
-│   │   └── upload.py               # Image upload for diagrams
-│   ├── services/
-│   │   ├── claude_client.py        # Anthropic API wrapper
-│   │   ├── search_service.py       # Web search integration
-│   │   └── session_store.py        # Redis session management
-│   └── requirements.txt
-├── frontend/
-│   ├── src/
-│   │   ├── components/
-│   │   │   ├── Chat/
-│   │   │   │   ├── ChatContainer.jsx
-│   │   │   │   ├── MessageBubble.jsx
-│   │   │   │   └── InputArea.jsx
-│   │   │   ├── CategorySelector.jsx
-│   │   │   ├── VoiceRecorder.jsx
-│   │   │   └── ImageUploader.jsx
-│   │   ├── context/
-│   │   │   └── ChatContext.jsx
-│   │   ├── services/
-│   │   │   └── api.js
-│   │   └── App.jsx
-│   └── package.json
-└── README.md
-```
+### Root Files
+
+| File | Purpose |
+|------|---------|
+| `.gitignore` | Excludes `node_modules/`, `venv/`, `.env`, `__pycache__/`, `build/`, `.DS_Store` |
+| `README.md` | This file |
+| `QUICKSTART.md` | Setup guide with cURL examples for manual API testing |
+| `FINAL_GUIDE.md` | End-to-end usage guide with example flows |
+| `BACKEND_TEST_RESULTS.md` | Test coverage report (all structure tests pass without API keys) |
 
 ---
-
-## Environment Setup
 
 ### Backend
 
-1. **Install dependencies:**
-   ```bash
-   cd backend
-   python -m venv venv
-   source venv/bin/activate  # On Windows: venv\Scripts\activate
-   pip install -r requirements.txt
-   ```
+#### `backend/config.py` — Configuration Hub
 
-2. **Configure environment variables:**
-   ```bash
-   cp .env.example .env
-   # Edit .env with your API keys
-   ```
+Central configuration loaded from environment variables.
 
-   Required variables:
-   ```
-   ANTHROPIC_API_KEY=sk-ant-xxxxx
-   BRAVE_SEARCH_API_KEY=xxxxx  # Optional: for web search
-   REDIS_URL=redis://localhost:6379
-   ```
-
-3. **Start Redis:**
-   ```bash
-   docker run -d -p 6379:6379 redis:latest
-   # Or: brew install redis && redis-server
-   ```
-
-4. **Run backend:**
-   ```bash
-   uvicorn app:app --reload --port 8000
-   ```
-
-### Frontend
-
-1. **Install dependencies:**
-   ```bash
-   cd frontend
-   npm install
-   ```
-
-2. **Start dev server:**
-   ```bash
-   npm start
-   # Runs on http://localhost:3000
-   ```
+| Setting | Value | Purpose |
+|---------|-------|---------|
+| `LLM_PROVIDER` | `"gemini"` | Primary LLM provider (`"gemini"` or `"anthropic"`) |
+| `GEMINI_TEXT_MODEL` | `"gemini-2.5-flash"` | Default text model |
+| `GEMINI_VISION_MODEL` | `"gemini-2.5-flash"` | Default vision model |
+| `GEMINI_TEXT_MODEL_CHAIN` | `[2.5-flash, 2.0-flash, 1.5-flash, 1.5-pro]` | Fallback chain on rate limits |
+| `GEMINI_VISION_MODEL_CHAIN` | Same as text chain | Vision fallback chain |
+| `MAX_TOKENS` | `16384` | Max output tokens (high for thinking models) |
+| `REDIS_URL` | `redis://localhost:6379` | Session store (optional) |
+| `SESSION_TTL` | `86400` (24h) | Session expiry |
 
 ---
 
-## API Endpoints
+#### `backend/app.py` — FastAPI Routes
 
-| Method | Endpoint | Description |
-|--------|----------|-------------|
-| `POST` | `/api/chat/start` | Start new interview session |
-| `POST` | `/api/chat/message` | Send message (text/speech transcript) |
-| `POST` | `/api/chat/upload` | Upload diagram image |
-| `GET` | `/api/session/{id}` | Get session history |
-| `DELETE` | `/api/session/{id}` | Clear session |
+The API entry point. Defines 6 endpoints:
+
+| Endpoint | Method | What It Does |
+|----------|--------|-------------|
+| `/api/chat/start` | POST | Creates a session, calls Orchestrator to get the first question. Input: `{category, focus_areas}`. Returns: `{session_id, response}` |
+| `/api/chat/message` | POST | Sends user's answer to the Orchestrator. Input: `{session_id, message}`. Returns: follow-up question, "COMPLETE" signal, or scored evaluation |
+| `/api/chat/upload` | POST | Uploads a diagram image for vision analysis. Input: `{session_id, image_base64, description}`. Returns: component analysis, scores, suggestions |
+| `/api/session/{id}` | GET | Returns full session data (conversation thread, evaluations, phase) |
+| `/api/session/{id}` | DELETE | Deletes a session |
+| `/health` | GET | Returns `{"status": "healthy"}` |
+
+Also configures CORS for `localhost:3000` (React dev server).
 
 ---
 
-## Session State Schema
+#### `backend/services/claude_client.py` — LLM Abstraction Layer
 
-```json
+Provides a unified interface for all agents to call LLMs, regardless of provider.
+
+**`GeminiClient` class** (primary):
+- **`send_message(system_prompt, messages, model?, max_tokens?)`** — Text LLM call. Iterates through `GEMINI_TEXT_MODEL_CHAIN` on 429 errors. Builds conversation from message list, applies system prompt.
+- **`send_message_with_image(system_prompt, text, image_base64, model?)`** — Vision LLM call. Same fallback logic using `GEMINI_VISION_MODEL_CHAIN`. Used for system design diagram analysis.
+- **`extract_text(response)`** — Extracts text from Gemini response. Handles thinking models (gemini-2.5-flash) where `.text` may be `None` by falling back to `candidates[0].content.parts`.
+- **`_is_rate_limit_error(exc)`** — Detects 429 / `RESOURCE_EXHAUSTED` from the google-genai SDK to trigger fallback.
+
+**`AnthropicClient` class** (fallback):
+- Same interface (`send_message`, `send_message_with_image`, `extract_text`) wrapping the Anthropic SDK.
+
+**Client selection** at module level:
+```python
+if config.LLM_PROVIDER == "gemini":
+    claude_client = GeminiClient()
+else:
+    claude_client = AnthropicClient()
+```
+
+All agents import `claude_client` — they never know which provider is active.
+
+---
+
+#### `backend/services/session_store.py` — Session Management
+
+Stores interview state with automatic Redis/in-memory fallback.
+
+**`SessionStore` class:**
+- **`create_session(category, focus_areas)`** — Creates a new session with UUID. Initial phase: `"question_needed"`.
+- **`get_session(session_id)`** / **`update_session(session_id, data)`** — CRUD operations.
+- **`add_message(session_id, role, content)`** — Appends to `conversation_thread`.
+- **`set_phase(session_id, phase)`** — Transitions the state machine.
+- **`add_asked_question(session_id, question_id)`** — Tracks asked questions (MD5 hashes) for deduplication.
+
+**Session schema:**
+```python
 {
-  "session_id": "uuid",
-  "category": "behavioral | technical | coding | system-design",
-  "focus_areas": ["Amazon LP", "Ownership"],
-  "current_question": {
-    "id": "hash123",
-    "text": "Tell me about a time...",
-    "source": "Reddit - r/cscareerquestions",
-    "metadata": {}
-  },
-  "conversation_thread": [
-    {"role": "assistant", "content": "Question..."},
-    {"role": "user", "content": "Answer..."},
-    {"role": "assistant", "content": "Follow-up..."}
-  ],
-  "phase": "question_needed | answering | ready_for_eval | evaluating",
-  "asked_questions": ["hash123", "hash456"],
-  "evaluations": [
-    {
-      "question_id": "hash123",
-      "score": 9,
-      "feedback": {}
-    }
-  ]
+    "session_id": "uuid",
+    "category": "behavioral | technical | coding | system-design",
+    "focus_areas": ["Amazon LP"],
+    "current_question": {"question_id": "...", "question_text": "...", ...},
+    "conversation_thread": [{"role": "user|assistant", "content": "..."}],
+    "phase": "question_needed | answering | ready_for_eval | evaluating",
+    "asked_questions": ["hash1", "hash2"],
+    "evaluations": [{"question_id": "...", "evaluation": {...}}]
 }
 ```
 
 ---
 
-## Agent Prompt Engineering
+#### `backend/agents/orchestrator.py` — Central Router
 
-### Question Curator Agent
-- Searches Reddit, Glassdoor, Blind for verified questions
-- Deduplicates against asked questions
-- Returns question with source attribution
+The brain of the system. Routes messages to the right agent based on session phase.
 
-### Interview Coach Agent
-- Assesses answer completeness (STAR elements, technical depth)
-- Asks ONE targeted follow-up question
-- Conversational and encouraging tone
-- Signals "COMPLETE" when ready for evaluation
+**`process_message(session_id, user_message, image_base64?)`:**
 
-### Evaluator Agent
-- Scores on 0-10 scale with rubric
-- Provides strengths, improvements, follow-ups
-- Benchmark: "strong hire" at FAANG
-- Direct but constructive feedback
+| Current Phase | Action | Calls |
+|---------------|--------|-------|
+| `question_needed` | Get next question | → `QuestionCurator.get_question()` |
+| `answering` | Process user's answer | → `InterviewCoach.process_answer()` |
+| `answering` + "evaluate" keyword | Trigger evaluation | → `Evaluator.evaluate_answer()` |
+| `ready_for_eval` | Score the answer | → `Evaluator.evaluate_answer()` |
 
-### Diagram Evaluator (Vision)
-- Identifies components in uploaded diagrams
-- Traces data flow and architecture patterns
-- Critical evaluation of scalability, reliability
-- Suggests specific improvements
+**Key helper methods:**
+- `_handle_new_question()` — Gets question, formats it for display, updates session.
+- `_handle_evaluation()` — Scores answer, stores evaluation, formats results with emoji.
+- `_format_question()` — Category-specific formatting (shows difficulty for coding, scale requirements for system design, LP for behavioral).
+- `_format_evaluation()` — Renders scores, strengths, improvements, and follow-ups.
 
 ---
 
-## Success Metrics
+#### `backend/agents/question_curator.py` — Question Sourcing
 
-- **Question Quality:** 90%+ from verified FAANG sources
-- **Evaluation Accuracy:** ±1 point vs human interviewer
-- **Follow-up Relevance:** 80%+ deemed helpful
-- **Diagram Understanding:** 95%+ component identification accuracy
-- **User Satisfaction:** 8/10+ "felt like real interview"
+Sources questions from CSV banks. Only uses LLM for technical category.
+
+**`get_question(category, focus_areas, asked_questions)`:**
+
+| Category | Source | LLM Used? |
+|----------|--------|-----------|
+| **Behavioral** | `behavioral_questions.csv` (106 questions — Amazon LP, Google) | No |
+| **Technical** | `technical_topics.csv` (131 topics) → LLM generates targeted question | Yes (with CSV fallback) |
+| **Coding** | `leetcode_questions.csv` (173 problems with company tags, difficulty) | No |
+| **System Design** | `system_design_questions.csv` (36 questions with scale requirements) | No |
+
+**Deduplication:** Generates MD5 hash of question text. Skips questions already in `asked_questions` set.
+
+**Question data returned:**
+```python
+{
+    "question_id": "a1b2c3d4e5f6",
+    "question_text": "Tell me about a time you failed...",
+    "focus_area": "Amazon LP - Ownership",
+    "source": "behavioral_questions.csv",
+    # + category-specific fields (difficulty, companies, url, key_components, etc.)
+}
+```
 
 ---
 
-## Development Roadmap
+#### `backend/agents/interview_coach.py` — Follow-Up Coach
 
-### Phase 1: Core Chat (Week 1)
-- [x] FastAPI backend with session management
-- [ ] Chat interface with text input
-- [ ] Orchestrator agent routing
-- [ ] Question Curator agent integration
+Conducts the interview by asking probing follow-up questions.
 
-### Phase 2: Multi-Modal Input (Week 2)
-- [ ] Voice recording (Web Speech API)
-- [ ] Image upload for diagrams
-- [ ] Vision agent integration
+**`process_answer(category, question_data, conversation_thread)`:**
+1. Gets category-specific system prompt (from `coach_prompts.py`)
+2. Sends full conversation to LLM
+3. LLM responds with either:
+   - A follow-up question (answer is incomplete)
+   - Exactly `"COMPLETE"` (answer is thorough enough for evaluation)
 
-### Phase 3: Evaluation & Feedback (Week 3)
-- [ ] Interview Coach agent
-- [ ] Evaluator agent with rubrics
-- [ ] Score display and feedback UI
+**Category-specific coaching:**
+- **Behavioral:** Checks STAR coverage — probes for missing Situation/Task/Action/Result
+- **Technical:** Checks for depth — probes for trade-offs, edge cases, real-world examples
+- **System Design:** Checks architecture completeness — probes for scalability, failure handling, data consistency
 
-### Phase 4: Polish (Week 4)
-- [ ] Question deduplication
-- [ ] Session persistence
-- [ ] Performance optimization
-- [ ] User testing
+---
+
+#### `backend/agents/evaluator.py` — Answer Scorer
+
+Scores answers using category-specific rubrics. Supports both text and vision.
+
+**`evaluate_answer(category, question_data, conversation_thread)`:**
+- Sends conversation to LLM with evaluator rubric prompt
+- Parses JSON response with scores, strengths, improvements
+- Returns structured evaluation
+
+**`evaluate_diagram(question_data, user_description, image_base64)`:**
+- Sends diagram image to LLM with vision capabilities
+- Analyzes components, data flow, architecture patterns
+- Returns: components identified, scalability/reliability scores, critical issues, suggestions
+
+**Scoring rubrics by category:**
+
+| Category | Dimensions (0-10 each) |
+|----------|----------------------|
+| **Behavioral** | STAR Coverage, Specificity, Impact, Authenticity |
+| **Technical** | Technical Accuracy, Depth, Clarity, Practical Application |
+| **System Design** | Component Selection, Scalability, Reliability, Data Consistency, Communication |
+| **Diagram** | Components, Data Flow, Scalability Score, Reliability Score |
+
+---
+
+#### `backend/prompts/` — System Prompt Templates
+
+Three files containing the system prompts that define each agent's behavior:
+
+| File | Function | Used By |
+|------|----------|---------|
+| `curator_prompts.py` | `get_question_curator_prompt(category, focus_areas, asked_questions, topic_context?)` | Question Curator (technical only) |
+| `coach_prompts.py` | `get_coach_prompt(category, question_data)` | Interview Coach |
+| `evaluator_prompts.py` | `get_evaluator_prompt(category, question_data, conversation_thread)` + `get_diagram_evaluator_prompt(question_data, user_description)` | Evaluator |
+
+Each prompt includes:
+- Role definition (who the agent is)
+- Category-specific rubric (what to assess)
+- Output format (JSON schema expected)
+- Tone guidelines (encouraging but critical)
+
+---
+
+#### `backend/data/` — Question Banks (CSV)
+
+| File | Records | Key Columns |
+|------|---------|-------------|
+| `behavioral_questions.csv` | 106 | Question, Leadership_Principle, Company, Source, Priority |
+| `technical_topics.csv` | 131 | Category, Topic, Sub_Topic, Key_Concepts, Difficulty |
+| `leetcode_questions.csv` | 173 | Title, Difficulty, Companies, URL, Category, Optimal_Complexity |
+| `system_design_questions.csv` | 36 | Question, Company, Scale_Requirements, Key_Components, Priority |
+
+---
+
+#### `backend/test_backend.py` — Structure Tests
+
+Standalone test script that verifies all backend components load correctly **without needing API keys**.
+
+Tests: config loading, session CRUD, prompt generation for all agents, FastAPI route registration.
+
+---
+
+### Frontend
+
+#### `frontend/src/App.js` — Root Component
+
+Manages navigation between two views:
+- **Home** (`currentView === 'home'`): Shows `CategorySelector`
+- **Chat** (`currentView === 'chat'`): Shows `ChatInterface`
+
+State: `currentView`, `sessionId`, `category`
+
+---
+
+#### `frontend/src/services/api.js` — API Client
+
+Fetch-based HTTP client pointing at `http://localhost:8000/api`.
+
+| Function | Endpoint | Purpose |
+|----------|----------|---------|
+| `startSession(category, focusAreas)` | POST `/chat/start` | Begin interview |
+| `sendMessage(sessionId, message)` | POST `/chat/message` | Send answer |
+| `uploadImage(sessionId, imageBase64, description)` | POST `/chat/upload` | Upload diagram |
+| `getSession(sessionId)` | GET `/session/{id}` | Fetch history |
+
+---
+
+#### `frontend/src/components/CategorySelector.js` — Home Screen
+
+Displays 4 category cards in a grid:
+
+| Category | Icon | Focus Options |
+|----------|------|---------------|
+| Behavioral (STAR) | `💬` | Amazon LP, Google Googleyness |
+| Technical Knowledge | `💻` | Cloud Architecture, OOP, DS&A, Prompt Engineering |
+| Problem Solving | `🧩` | (none — direct from LeetCode bank) |
+| System Design | `🏗️` | (none — direct from question bank) |
+
+User selects a category, optionally picks focus areas, then clicks "Start Interview".
+
+---
+
+#### `frontend/src/components/Chat/ChatInterface.js` — Chat View
+
+The main interview interface. Key behaviors:
+
+1. **On mount:** Calls `startSession()` API, displays first question
+2. **Message loop:** User types/records answer → sends to backend → displays response
+3. **Buttons:** "Evaluate My Answer" (green) and "Next Question" (orange) appear contextually based on session phase
+4. **Voice:** Transcribed text populates the input area
+5. **Image:** Base64-encoded diagram sent via `uploadImage()` API
+
+---
+
+#### `frontend/src/components/Chat/MessageBubble.js` — Message Display
+
+Renders individual messages with role-based styling (user = right-aligned blue, assistant = left-aligned dark). Applies basic markdown formatting: `**bold**`, `• ` lists, `# ` headings. Shows a 3-dot animation during loading.
+
+---
+
+#### `frontend/src/components/Chat/InputArea.js` — Text Input
+
+Multi-line textarea (3 rows). Enter sends, Shift+Enter adds newline. Disabled while waiting for API response.
+
+---
+
+#### `frontend/src/components/Chat/VoiceRecorder.js` — Voice Input
+
+Uses browser-native `SpeechRecognition` API (Chrome/Edge). Toggle between "🎤 Record" and "⏹️ Stop". Accumulates transcription from interim results and passes final text to parent via `onTranscript` callback.
+
+---
+
+#### `frontend/src/components/Chat/ImageUploader.js` — Diagram Upload
+
+Hidden file input triggered by "📸 Upload Diagram" button. Shows image preview + optional description field. Converts image to base64 via `FileReader` API and sends to backend.
+
+---
+
+#### Frontend CSS Files
+
+| File | Styles |
+|------|--------|
+| `index.css` | Global dark theme (`#0f172a` bg, system fonts) |
+| `App.css` | Root container (full viewport height) |
+| `CategorySelector.css` | Card grid, gradient text, color-coded borders, hover effects |
+| `ChatInterface.css` | Flexbox chat layout, action buttons (green evaluate, orange next) |
+| `MessageBubble.css` | User/assistant bubble styles, loading animation |
+| `InputArea.css` | Textarea and send button |
+| `VoiceRecorder.css` | Record button with active state indicator |
+| `ImageUploader.css` | Upload button, preview area, description input |
+
+---
+
+## Setup
+
+### Prerequisites
+- Python 3.10+
+- Node.js 18+
+- Google Gemini API key (free tier works)
+- Redis (optional — falls back to in-memory)
+
+### Backend
+
+```bash
+cd backend
+python -m venv venv
+source venv/bin/activate
+pip install -r requirements.txt
+
+# Configure environment
+cp .env.example .env
+# Edit .env: set GEMINI_API_KEY=your_key_here
+
+# Run
+uvicorn app:app --reload --port 8000
+```
+
+### Frontend
+
+```bash
+cd frontend
+npm install
+npm start
+# Opens http://localhost:3000
+```
+
+---
+
+## Multi-Model Fallback
+
+The system automatically handles Gemini rate limits by trying models in order:
+
+```
+gemini-2.5-flash → gemini-2.0-flash → gemini-1.5-flash → gemini-1.5-pro
+```
+
+- **On 429 RESOURCE_EXHAUSTED:** Logs a warning and immediately tries the next model
+- **On other errors:** Raises immediately (no masking of bugs)
+- **All models exhausted:** Error propagates to agent-level error handling
+- **Logging:** Every attempt and success is logged at INFO/WARNING level
+
+---
+
+## API Examples
+
+```bash
+# Start a behavioral interview
+curl -X POST http://localhost:8000/api/chat/start \
+  -H "Content-Type: application/json" \
+  -d '{"category": "behavioral", "focus_areas": ["Amazon Leadership Principles"]}'
+
+# Send an answer
+curl -X POST http://localhost:8000/api/chat/message \
+  -H "Content-Type: application/json" \
+  -d '{"session_id": "YOUR_SESSION_ID", "message": "In my previous role..."}'
+
+# Trigger evaluation
+curl -X POST http://localhost:8000/api/chat/message \
+  -H "Content-Type: application/json" \
+  -d '{"session_id": "YOUR_SESSION_ID", "message": "evaluate"}'
+
+# Health check
+curl http://localhost:8000/health
+```
 
 ---
 
 ## License
 
 MIT
-
----
-
-## Support
-
-For issues or questions, please open a GitHub issue or contact the development team.
