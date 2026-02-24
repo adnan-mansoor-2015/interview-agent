@@ -42,10 +42,10 @@ class Orchestrator:
                 session_store.add_message(
                     session_id,
                     "assistant",
-                    "Great! Your answer covers all the key elements. Click 'Evaluate' to get your score and feedback.",
+                    "Okay, I think that covers it. Whenever you're ready, hit Evaluate and I'll give you my feedback.",
                 )
                 return {
-                    "message": "Great! Your answer covers all the key elements.",
+                    "message": "Okay, I think that covers it. Whenever you're ready, hit Evaluate and I'll give you my feedback.",
                     "phase": "ready_for_eval",
                     "show_evaluate_button": True,
                 }
@@ -117,47 +117,28 @@ class Orchestrator:
         }
 
     def _format_question(self, question_data: dict, category: str):
-        """Format question for display."""
+        """Format question for display — keep it short like a real interviewer."""
         if category == "coding":
-            return f"""🧩 **Coding Challenge**
+            return f"""Alright, let's do a coding problem.
 
-**{question_data.get('question_title')}** — {question_data.get('difficulty')}
+**{question_data.get('question_title')}** ({question_data.get('difficulty')})
 
-Companies: {', '.join(question_data.get('companies', []))}
-Focus: {', '.join(question_data.get('focus_areas', []))}
+{question_data.get('leetcode_url')}
 
-🔗 Solve on LeetCode: {question_data.get('leetcode_url')}
-
-Once you've solved it, paste your code or describe your approach!"""
+Take a look and walk me through your approach."""
 
         elif category == "system-design":
-            components = question_data.get('key_components', [])
-            return f"""🏗️ **System Design Challenge**
+            return f"""Okay, let's do a design question.
 
 {question_data.get('question_text')}
 
-**Scale Requirements:** {question_data.get('scale_requirements')}
-
-**Key Components to Consider:**
-{chr(10).join(['• ' + c for c in components])}
-
-You can upload a diagram or describe your approach in text!"""
+Assume we're dealing with {question_data.get('scale_requirements', 'large scale')}. Where would you start?"""
 
         elif category == "behavioral":
-            return f"""💬 **Behavioral Question**
-
-**Leadership Principle:** {question_data.get('leadership_principle', 'N/A')}
-
-{question_data.get('question_text')}
-
-💡 Remember to use the STAR method: Situation, Task, Action, Result"""
+            return f"""{question_data.get('question_text')}"""
 
         else:  # technical
-            return f"""💻 **Technical Question**
-
-{question_data.get('question_text')}
-
-Focus Area: {question_data.get('focus_area', 'General')}"""
+            return f"""{question_data.get('question_text')}"""
 
     def _format_evaluation(self, eval_data: dict):
         """Format evaluation for display."""
