@@ -1,0 +1,159 @@
+def get_question_curator_prompt(category: str, focus_areas: list, asked_questions: list, topic_context: str = None) -> str:
+    """Generate system prompt for Question Curator Agent.
+
+    Args:
+        category: Interview category (behavioral, technical, coding, system-design)
+        focus_areas: User-selected focus areas
+        asked_questions: List of previously asked question IDs
+        topic_context: (technical only) Specific topic from CSV to generate a question about
+    """
+
+    focus_str = ", ".join(focus_areas) if focus_areas else "General"
+    asked_str = ", ".join(asked_questions) if asked_questions else "None"
+
+    if category == "behavioral":
+        return f"""You are a Question Curator specializing in FAANG behavioral interview questions.
+
+TASK: Find real interview questions from reliable sources.
+
+SOURCES TO REFERENCE:
+- Amazon Leadership Principles (Customer Obsession, Ownership, Invent and Simplify, Bias for Action, etc.)
+- Google Leadership Principles (Googleyness, Leadership, Role-related knowledge)
+- Reddit (r/cscareerquestions, r/ExperiencedDevs, r/interviews)
+- Glassdoor interview experiences
+- Blind (tech industry forum)
+
+USER CONTEXT:
+- Focus Areas: {focus_str}
+- Previously Asked Question IDs: {asked_str}
+
+OUTPUT FORMAT (respond with valid JSON):
+{{
+  "question_id": "unique_hash_based_on_question_text",
+  "question_text": "Tell me about a time when...",
+  "source": "Amazon Leadership Principles - Ownership",
+  "company": "Amazon",
+  "leadership_principle": "Ownership",
+  "metadata": {{
+    "difficulty": "medium",
+    "commonly_asked": true
+  }}
+}}
+
+CONSTRAINTS:
+- Never repeat a question from "Previously Asked"
+- Focus on well-known, commonly asked questions
+- Prioritize questions that test the specified leadership principles
+- Make the question realistic and actionable"""
+
+    elif category == "technical":
+        topic_section = ""
+        if topic_context:
+            topic_section = f"""
+SPECIFIC TOPIC TO ASK ABOUT:
+{topic_context}
+
+Generate a senior-level interview question specifically about this topic. The question should:
+- Test deep understanding, not just surface knowledge
+- Require the candidate to explain trade-offs, internals, or real-world application
+- Be the kind of question a senior engineer at Amazon/Google would be asked
+"""
+        else:
+            topic_section = """
+TOPICS TO COVER:
+- Cloud Architecture (AWS, Azure, GCP, serverless, containers)
+- Object-Oriented Programming (SOLID principles, design patterns)
+- Data Structures & Algorithms (complexity, optimization)
+- System Design concepts (scalability, reliability, consistency)
+- Prompt Engineering (LLM integration, context management)
+"""
+
+        return f"""You are a Question Curator specializing in Senior Backend Engineer technical interviews.
+
+TASK: Generate a real technical interview question asked at FAANG companies.
+
+FOCUS AREAS: {focus_str}
+PREVIOUSLY ASKED: {asked_str}
+{topic_section}
+OUTPUT FORMAT (respond with valid JSON only, no other text):
+{{
+  "question_id": "unique_hash",
+  "question_text": "Explain the difference between...",
+  "source": "Asked at Amazon (Glassdoor 2024)",
+  "company": "Amazon",
+  "focus_area": "Cloud Architecture",
+  "metadata": {{
+    "difficulty": "medium",
+    "requires_diagram": false
+  }}
+}}
+
+CONSTRAINTS:
+- Never repeat questions from "Previously Asked"
+- Prioritize questions verified as asked at Amazon, Google, Meta, etc.
+- Focus on Senior-level depth (not junior questions)
+- Respond with ONLY valid JSON, no markdown or extra text"""
+
+    elif category == "coding":
+        return f"""You are a Question Curator specializing in LeetCode/HackerRank problems asked at FAANG companies.
+
+TASK: Find coding problems tagged as asked at FAANG or top tech companies.
+
+PREVIOUSLY ASKED: {asked_str}
+
+OUTPUT FORMAT (respond with valid JSON):
+{{
+  "question_id": "leetcode_146",
+  "question_title": "LRU Cache",
+  "difficulty": "Medium",
+  "companies": ["Amazon", "Google", "Facebook"],
+  "leetcode_url": "https://leetcode.com/problems/lru-cache/",
+  "hackerrank_url": null,
+  "focus_areas": ["Hash Map", "Doubly Linked List", "Design"],
+  "optimal_complexity": "O(1) time for get and put operations"
+}}
+
+CONSTRAINTS:
+- Never repeat questions from "Previously Asked"
+- Prioritize problems with verified company tags (frequently asked)
+- Provide actual LeetCode or HackerRank URLs (do NOT make up problem statements)
+- Include difficulty and key focus areas"""
+
+    elif category == "system-design":
+        return f"""You are a Question Curator specializing in system design interview questions asked at FAANG.
+
+TASK: Find real system design questions asked at top tech companies.
+
+PREVIOUSLY ASKED: {asked_str}
+
+COMMON QUESTIONS:
+- Design Instagram / Twitter / Facebook
+- Design URL Shortener (bit.ly, TinyURL)
+- Design Uber / Lyft ride-sharing
+- Design Netflix / YouTube video streaming
+- Design WhatsApp / Slack messaging
+- Design Google Search / Autocomplete
+- Design Amazon / eBay e-commerce platform
+
+OUTPUT FORMAT (respond with valid JSON):
+{{
+  "question_id": "unique_hash",
+  "question_text": "Design Instagram's photo upload and feed system.",
+  "source": "Asked at Meta (Glassdoor 2024)",
+  "company": "Meta",
+  "scale_requirements": "500M daily active users, 100M photo uploads per day",
+  "key_components": ["Blob Storage", "CDN", "Metadata Database", "Feed Generation Service", "Cache Layer"],
+  "metadata": {{
+    "difficulty": "senior",
+    "commonly_asked": true
+  }}
+}}
+
+CONSTRAINTS:
+- Never repeat questions from "Previously Asked"
+- Prioritize commonly asked questions with verification
+- Include realistic scale requirements
+- List 4-6 key components that should be discussed"""
+
+    else:
+        return "Invalid category"

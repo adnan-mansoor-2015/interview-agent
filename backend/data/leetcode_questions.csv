@@ -1,0 +1,173 @@
+Rank,Question,Category,Difficulty,LeetCode_Link,IdealTimeComplexity,FollowUp,Company
+1,Two Sum,Array / Hashing,Easy,https://leetcode.com/problems/two-sum/,O(n),What if array is sorted? Can you do O(1) space?,"Amazon, Google, Meta, Microsoft, Apple"
+2,Longest Substring Without Repeating Characters,Sliding Window / String,Medium,https://leetcode.com/problems/longest-substring-without-repeating-characters/,O(n),How would you handle Unicode characters?,"Amazon, Google, Meta, Bloomberg"
+3,Maximum Subarray,Dynamic Programming,Medium,https://leetcode.com/problems/maximum-subarray/,O(n),Can you also return the subarray indices?,"Amazon, Google, Microsoft, Apple"
+4,Trapping Rain Water,Two Pointers / Stack,Hard,https://leetcode.com/problems/trapping-rain-water/,O(n),Can you solve it using a stack instead?,"Amazon, Google, Meta, Goldman Sachs"
+5,Best Time to Buy and Sell Stock,Greedy / DP,Easy,https://leetcode.com/problems/best-time-to-buy-and-sell-stock/,O(n),What if multiple transactions are allowed?,"Amazon, Google, Meta, Microsoft"
+6,Add Two Numbers,Linked List,Medium,https://leetcode.com/problems/add-two-numbers/,O(n),How to handle very large inputs?,"Amazon, Google, Meta, Microsoft"
+7,3Sum,Two Pointers / Sorting,Medium,https://leetcode.com/problems/3sum/,O(n^2),How would you generalize to k-Sum?,"Amazon, Google, Meta, Bloomberg"
+8,Longest Palindromic Substring,String / DP,Medium,https://leetcode.com/problems/longest-palindromic-substring/,O(n^2),Can you optimize using Manacher's algorithm?,"Amazon, Google, Microsoft"
+9,Container With Most Water,Two Pointers,Medium,https://leetcode.com/problems/container-with-most-water/,O(n),Why does moving shorter pointer work?,"Amazon, Google, Meta"
+10,Median of Two Sorted Arrays,Binary Search,Hard,https://leetcode.com/problems/median-of-two-sorted-arrays/,"O(log(min(n,m)))",Can you derive the partition logic?,"Amazon, Google, Apple"
+11,Search in Rotated Sorted Array,Binary Search,Medium,https://leetcode.com/problems/search-in-rotated-sorted-array/,O(log n),What if duplicates exist?,"Amazon, Google, Meta, Microsoft"
+12,Valid Parentheses,Stack,Easy,https://leetcode.com/problems/valid-parentheses/,O(n),How would you extend to multiple bracket types?,"Amazon, Google, Meta, Bloomberg"
+13,Number of Islands,Graph / DFS-BFS,Medium,https://leetcode.com/problems/number-of-islands/,O(m*n),How to solve using Union-Find?,"Amazon, Google, Meta, Microsoft"
+14,Merge Intervals,Sorting / Greedy,Medium,https://leetcode.com/problems/merge-intervals/,O(n log n),How to handle interval insertion?,"Amazon, Google, Meta, Microsoft"
+15,Product of Array Except Self,Array,Medium,https://leetcode.com/problems/product-of-array-except-self/,O(n),Can you do it without division?,"Amazon, Google, Meta, Apple"
+16,LRU Cache,Design,Medium,https://leetcode.com/problems/lru-cache/,O(1),Implement without OrderedDict?,"Amazon, Google, Meta, Microsoft"
+17,Course Schedule,Graph / Topological Sort,Medium,https://leetcode.com/problems/course-schedule/,O(V+E),Return actual order?,"Amazon, Google, Meta"
+18,Binary Tree Maximum Path Sum,Tree / DFS,Hard,https://leetcode.com/problems/binary-tree-maximum-path-sum/,O(n),What about leaf-to-leaf constraint?,"Amazon, Google, Meta, Microsoft"
+19,Coin Change,Dynamic Programming,Medium,https://leetcode.com/problems/coin-change/,O(amount*n),Return actual coins used?,"Amazon, Google, Microsoft"
+20,Word Break,Dynamic Programming,Medium,https://leetcode.com/problems/word-break/,O(n^2),Return all possible segmentations?,"Amazon, Google, Meta, Microsoft"
+21,Merge Two Sorted Lists,Linked List,Easy,https://leetcode.com/problems/merge-two-sorted-lists/,O(n+m),How would you merge k sorted lists?,"Amazon, Google, Microsoft, Apple"
+22,Reverse Linked List,Linked List,Easy,https://leetcode.com/problems/reverse-linked-list/,O(n),Can you do it recursively and iteratively?,"Amazon, Google, Meta, Microsoft"
+23,Group Anagrams,Array / Hashing,Medium,https://leetcode.com/problems/group-anagrams/,O(n*k),What if strings are very long?,"Amazon, Google, Meta, Bloomberg"
+24,Climbing Stairs,Dynamic Programming,Easy,https://leetcode.com/problems/climbing-stairs/,O(n),What if you can take up to k steps?,"Amazon, Google, Apple"
+25,Binary Search,Binary Search,Easy,https://leetcode.com/problems/binary-search/,O(log n),Find first/last occurrence of target?,"Amazon, Google, Microsoft"
+26,Linked List Cycle,Linked List,Easy,https://leetcode.com/problems/linked-list-cycle/,O(n),Find the starting node of the cycle?,"Amazon, Google, Microsoft"
+27,Min Stack,Stack / Design,Medium,https://leetcode.com/problems/min-stack/,O(1),How would you implement a max stack?,"Amazon, Google, Bloomberg"
+28,Rotate Image,Array / Matrix,Medium,https://leetcode.com/problems/rotate-image/,O(n^2),Can you rotate by 90/180/270 degrees?,"Amazon, Google, Microsoft"
+29,Spiral Matrix,Array / Matrix,Medium,https://leetcode.com/problems/spiral-matrix/,O(m*n),How would you generate a spiral matrix?,"Amazon, Google, Meta"
+30,Word Search,Backtracking / DFS,Medium,https://leetcode.com/problems/word-search/,O(m*n*4^L),How would you optimize with a Trie?,"Amazon, Google, Meta, Microsoft"
+31,Serialize and Deserialize Binary Tree,Tree / Design,Hard,https://leetcode.com/problems/serialize-and-deserialize-binary-tree/,O(n),How would you handle N-ary trees?,"Amazon, Google, Meta, Microsoft"
+32,Find Median from Data Stream,Heap / Design,Hard,https://leetcode.com/problems/find-median-from-data-stream/,O(log n),How to handle sliding window median?,"Amazon, Google, Meta, Microsoft"
+33,Kth Largest Element in an Array,Heap / Quickselect,Medium,https://leetcode.com/problems/kth-largest-element-in-an-array/,O(n) avg,What is the worst case and how to avoid it?,"Amazon, Google, Meta"
+34,Top K Frequent Elements,Heap / Hashing,Medium,https://leetcode.com/problems/top-k-frequent-elements/,O(n),Can you solve it in O(n) using bucket sort?,"Amazon, Google, Meta"
+35,Validate Binary Search Tree,Tree / DFS,Medium,https://leetcode.com/problems/validate-binary-search-tree/,O(n),What about duplicate values?,"Amazon, Google, Meta, Microsoft"
+36,Lowest Common Ancestor of BST,Tree,Medium,https://leetcode.com/problems/lowest-common-ancestor-of-a-binary-search-tree/,O(h),What if it's not a BST?,"Amazon, Google, Meta"
+37,Implement Trie (Prefix Tree),Trie / Design,Medium,https://leetcode.com/problems/implement-trie-prefix-tree/,O(m),How would you support wildcard search?,"Amazon, Google, Meta"
+38,Clone Graph,Graph / DFS-BFS,Medium,https://leetcode.com/problems/clone-graph/,O(V+E),How to handle cycles during cloning?,"Amazon, Google, Meta"
+39,Pacific Atlantic Water Flow,Graph / DFS-BFS,Medium,https://leetcode.com/problems/pacific-atlantic-water-flow/,O(m*n),Can you optimize space complexity?,"Amazon, Google"
+40,Combination Sum,Backtracking,Medium,https://leetcode.com/problems/combination-sum/,O(n^target),How to handle duplicates in input?,"Amazon, Google, Meta"
+41,Subsets,Backtracking,Medium,https://leetcode.com/problems/subsets/,O(2^n),How to handle duplicates?,"Amazon, Google, Meta"
+42,Permutations,Backtracking,Medium,https://leetcode.com/problems/permutations/,O(n!),How to handle duplicates?,"Amazon, Google, Meta"
+43,Letter Combinations of a Phone Number,Backtracking,Medium,https://leetcode.com/problems/letter-combinations-of-a-phone-number/,O(4^n),How to handle very long inputs?,"Amazon, Google, Meta"
+44,House Robber,Dynamic Programming,Medium,https://leetcode.com/problems/house-robber/,O(n),What if houses are in a circle?,"Amazon, Google, Microsoft"
+45,Longest Common Subsequence,Dynamic Programming,Medium,https://leetcode.com/problems/longest-common-subsequence/,O(m*n),Can you reconstruct the actual subsequence?,"Amazon, Google, Microsoft"
+46,Unique Paths,Dynamic Programming,Medium,https://leetcode.com/problems/unique-paths/,O(m*n),What if there are obstacles?,"Amazon, Google, Meta"
+47,Jump Game,Greedy / DP,Medium,https://leetcode.com/problems/jump-game/,O(n),What is the minimum number of jumps?,"Amazon, Google, Microsoft"
+48,Decode Ways,Dynamic Programming,Medium,https://leetcode.com/problems/decode-ways/,O(n),What if the encoding allows wildcards?,"Amazon, Google, Meta"
+49,Longest Increasing Subsequence,Dynamic Programming / Binary Search,Medium,https://leetcode.com/problems/longest-increasing-subsequence/,O(n log n),Can you reconstruct the actual subsequence?,"Amazon, Google, Microsoft"
+50,Design Add and Search Words Data Structure,Trie / DFS,Medium,https://leetcode.com/problems/design-add-and-search-words-data-structure/,O(m),How to optimize wildcard matching?,"Amazon, Google, Meta"
+51,Alien Dictionary,Graph / Topological Sort,Hard,https://leetcode.com/problems/alien-dictionary/,O(C),How to handle invalid inputs?,"Amazon, Google, Meta, Airbnb"
+52,Graph Valid Tree,Graph / Union Find,Medium,https://leetcode.com/problems/graph-valid-tree/,O(V+E),How to detect cycles in directed graphs?,"Amazon, Google, Meta"
+53,Meeting Rooms II,Heap / Sorting,Medium,https://leetcode.com/problems/meeting-rooms-ii/,O(n log n),What if rooms have different capacities?,"Amazon, Google, Meta, Bloomberg"
+54,Walls and Gates,Graph / BFS,Medium,https://leetcode.com/problems/walls-and-gates/,O(m*n),How would you handle weighted distances?,"Amazon, Google, Meta"
+55,Task Scheduler,Greedy / Heap,Medium,https://leetcode.com/problems/task-scheduler/,O(n),Can you return the actual schedule?,"Amazon, Google, Meta"
+56,Minimum Window Substring,Sliding Window,Hard,https://leetcode.com/problems/minimum-window-substring/,O(n),How to handle case sensitivity?,"Amazon, Google, Meta"
+57,Longest Repeating Character Replacement,Sliding Window,Medium,https://leetcode.com/problems/longest-repeating-character-replacement/,O(n),What if k operations include insertions?,"Amazon, Google"
+58,Encode and Decode Strings,String / Design,Medium,https://leetcode.com/problems/encode-and-decode-strings/,O(n),How to handle binary data?,"Amazon, Google, Meta"
+59,Accounts Merge,Graph / Union Find,Medium,https://leetcode.com/problems/accounts-merge/,O(n*k*log(nk)),How to handle streaming data?,"Amazon, Google, Meta"
+60,Remove Nth Node From End of List,Linked List / Two Pointers,Medium,https://leetcode.com/problems/remove-nth-node-from-end-of-list/,O(n),Can you do it in one pass?,"Amazon, Google, Meta"
+61,Reorder List,Linked List,Medium,https://leetcode.com/problems/reorder-list/,O(n),Can you do it with O(1) space?,"Amazon, Google, Meta"
+62,Set Matrix Zeroes,Array / Matrix,Medium,https://leetcode.com/problems/set-matrix-zeroes/,O(m*n),Can you do it with O(1) space?,"Amazon, Google, Microsoft"
+63,Palindrome Linked List,Linked List,Easy,https://leetcode.com/problems/palindrome-linked-list/,O(n),Can you check without reversing?,"Amazon, Google, Meta"
+64,Invert Binary Tree,Tree / DFS,Easy,https://leetcode.com/problems/invert-binary-tree/,O(n),Can you do it iteratively?,"Amazon, Google, Meta"
+65,Maximum Depth of Binary Tree,Tree / DFS,Easy,https://leetcode.com/problems/maximum-depth-of-binary-tree/,O(n),How about minimum depth?,"Amazon, Google, Microsoft"
+66,Same Tree,Tree / DFS,Easy,https://leetcode.com/problems/same-tree/,O(n),How about subtree check?,"Amazon, Google, Microsoft"
+67,Subtree of Another Tree,Tree / DFS,Easy,https://leetcode.com/problems/subtree-of-another-tree/,O(m*n),Can you optimize using hashing?,"Amazon, Google, Meta"
+68,Binary Tree Level Order Traversal,Tree / BFS,Medium,https://leetcode.com/problems/binary-tree-level-order-traversal/,O(n),How about zigzag level order?,"Amazon, Google, Meta, Microsoft"
+69,Construct Binary Tree from Preorder and Inorder,Tree,Medium,https://leetcode.com/problems/construct-binary-tree-from-preorder-and-inorder-traversal/,O(n),What if given postorder instead?,"Amazon, Google, Microsoft"
+70,Kth Smallest Element in a BST,Tree / DFS,Medium,https://leetcode.com/problems/kth-smallest-element-in-a-bst/,O(h+k),How to handle frequent queries?,"Amazon, Google, Meta"
+71,Word Ladder,Graph / BFS,Hard,https://leetcode.com/problems/word-ladder/,O(m^2*n),How to return all shortest paths?,"Amazon, Google, Meta"
+72,Surrounded Regions,Graph / DFS-BFS,Medium,https://leetcode.com/problems/surrounded-regions/,O(m*n),Can you solve with Union-Find?,"Amazon, Google"
+73,Rotting Oranges,Graph / BFS,Medium,https://leetcode.com/problems/rotting-oranges/,O(m*n),What if some cells are blocked?,"Amazon, Google, Microsoft"
+74,Course Schedule II,Graph / Topological Sort,Medium,https://leetcode.com/problems/course-schedule-ii/,O(V+E),How to detect all cycles?,"Amazon, Google, Meta"
+75,Redundant Connection,Graph / Union Find,Medium,https://leetcode.com/problems/redundant-connection/,O(n),What about directed graphs?,"Amazon, Google"
+76,Number of Connected Components,Graph / Union Find,Medium,https://leetcode.com/problems/number-of-connected-components-in-an-undirected-graph/,O(V+E),How about strongly connected components?,"Amazon, Google, Meta"
+77,Insert Interval,Sorting / Greedy,Medium,https://leetcode.com/problems/insert-interval/,O(n),How to handle multiple insertions?,"Amazon, Google, Meta"
+78,Non-overlapping Intervals,Sorting / Greedy,Medium,https://leetcode.com/problems/non-overlapping-intervals/,O(n log n),What greedy strategy works here?,"Amazon, Google"
+79,Maximum Product Subarray,Dynamic Programming,Medium,https://leetcode.com/problems/maximum-product-subarray/,O(n),How to handle zeros and negatives?,"Amazon, Google, Microsoft"
+80,Palindrome Partitioning,Backtracking / DP,Medium,https://leetcode.com/problems/palindrome-partitioning/,O(n*2^n),How to find minimum cuts?,"Amazon, Google"
+81,Edit Distance,Dynamic Programming,Medium,https://leetcode.com/problems/edit-distance/,O(m*n),Can you optimize space to O(n)?,"Amazon, Google, Microsoft"
+82,Distinct Subsequences,Dynamic Programming,Hard,https://leetcode.com/problems/distinct-subsequences/,O(m*n),Can you optimize space?,"Amazon, Google"
+83,Burst Balloons,Dynamic Programming,Hard,https://leetcode.com/problems/burst-balloons/,O(n^3),Can you explain the interval DP approach?,"Amazon, Google"
+84,Regular Expression Matching,Dynamic Programming / String,Hard,https://leetcode.com/problems/regular-expression-matching/,O(m*n),How does backtracking differ from DP here?,"Amazon, Google, Meta"
+85,Largest Rectangle in Histogram,Stack,Hard,https://leetcode.com/problems/largest-rectangle-in-histogram/,O(n),How does this relate to maximal rectangle?,"Amazon, Google, Microsoft"
+86,Maximal Rectangle,Stack / DP,Hard,https://leetcode.com/problems/maximal-rectangle/,O(m*n),Can you reduce to largest rectangle in histogram?,"Amazon, Google"
+87,Swim in Rising Water,Graph / Binary Search / Heap,Hard,https://leetcode.com/problems/swim-in-rising-water/,O(n^2 log n),Compare Dijkstra vs binary search approaches?,"Amazon, Google"
+88,Reconstruct Itinerary,Graph / DFS,Hard,https://leetcode.com/problems/reconstruct-itinerary/,O(E log E),How to handle Eulerian path?,"Amazon, Google"
+89,Min Cost Climbing Stairs,Dynamic Programming,Easy,https://leetcode.com/problems/min-cost-climbing-stairs/,O(n),Can you optimize to O(1) space?,"Amazon, Google"
+90,Partition Equal Subset Sum,Dynamic Programming,Medium,https://leetcode.com/problems/partition-equal-subset-sum/,O(n*sum),How does this relate to 0/1 knapsack?,"Amazon, Google"
+91,String to Integer (atoi),String,Medium,https://leetcode.com/problems/string-to-integer-atoi/,O(n),How to handle edge cases with overflow?,"Amazon, Google, Microsoft"
+92,Implement strStr() / Find the Index,String,Easy,https://leetcode.com/problems/find-the-index-of-the-first-occurrence-in-a-string/,O(n+m),Can you implement KMP algorithm?,"Amazon, Google, Microsoft"
+93,Generate Parentheses,Backtracking,Medium,https://leetcode.com/problems/generate-parentheses/,O(4^n/sqrt(n)),How to generate only valid ones?,"Amazon, Google, Meta"
+94,Merge k Sorted Lists,Linked List / Heap,Hard,https://leetcode.com/problems/merge-k-sorted-lists/,O(n log k),Compare heap vs divide-and-conquer approaches?,"Amazon, Google, Meta, Microsoft"
+95,Reverse Nodes in k-Group,Linked List,Hard,https://leetcode.com/problems/reverse-nodes-in-k-group/,O(n),Can you do it iteratively?,"Amazon, Google, Meta"
+96,Daily Temperatures,Stack,Medium,https://leetcode.com/problems/daily-temperatures/,O(n),How does monotonic stack work here?,"Amazon, Google"
+97,Car Fleet,Stack / Sorting,Medium,https://leetcode.com/problems/car-fleet/,O(n log n),How to handle the catch-up logic?,"Amazon, Google"
+98,Evaluate Reverse Polish Notation,Stack,Medium,https://leetcode.com/problems/evaluate-reverse-polish-notation/,O(n),How to convert infix to RPN?,"Amazon, Google, Microsoft"
+99,Time Based Key-Value Store,Binary Search / Design,Medium,https://leetcode.com/problems/time-based-key-value-store/,O(log n),How to handle deletions?,"Amazon, Google, Meta"
+100,Diameter of Binary Tree,Tree / DFS,Easy,https://leetcode.com/problems/diameter-of-binary-tree/,O(n),What if the tree is N-ary?,"Amazon, Google, Meta"
+101,Balanced Binary Tree,Tree / DFS,Easy,https://leetcode.com/problems/balanced-binary-tree/,O(n),Can you do it bottom-up?,"Amazon, Google"
+102,Right Side View of Binary Tree,Tree / BFS-DFS,Medium,https://leetcode.com/problems/binary-tree-right-side-view/,O(n),What about left side view?,"Amazon, Google, Meta"
+103,Count Good Nodes in Binary Tree,Tree / DFS,Medium,https://leetcode.com/problems/count-good-nodes-in-binary-tree/,O(n),What constitutes a good node?,"Amazon, Google"
+104,Longest Consecutive Sequence,Array / Hashing,Medium,https://leetcode.com/problems/longest-consecutive-sequence/,O(n),Can you achieve O(n) without sorting?,"Amazon, Google, Meta"
+105,Valid Anagram,Array / Hashing,Easy,https://leetcode.com/problems/valid-anagram/,O(n),What if inputs contain Unicode?,"Amazon, Google, Microsoft"
+106,Contains Duplicate,Array / Hashing,Easy,https://leetcode.com/problems/contains-duplicate/,O(n),What about within k distance?,"Amazon, Google, Microsoft"
+107,Valid Sudoku,Array / Hashing,Medium,https://leetcode.com/problems/valid-sudoku/,O(1),How would you solve the Sudoku?,"Amazon, Google"
+108,Minimum Height Trees,Graph / BFS,Medium,https://leetcode.com/problems/minimum-height-trees/,O(V+E),How to find tree centers?,"Amazon, Google"
+109,Network Delay Time,Graph / Dijkstra,Medium,https://leetcode.com/problems/network-delay-time/,O(E log V),Compare Dijkstra vs Bellman-Ford?,"Amazon, Google"
+110,Cheapest Flights Within K Stops,Graph / BFS-DP,Medium,https://leetcode.com/problems/cheapest-flights-within-k-stops/,O(K*E),Why does BFS work better here?,"Amazon, Google"
+111,Majority Element,Arrays,Easy,https://leetcode.com/problems/majority-element/,,,
+112,Move Zeroes,Arrays,Easy,https://leetcode.com/problems/move-zeroes/,,,
+113,Squares of a Sorted Array,Arrays,Easy,https://leetcode.com/problems/squares-of-a-sorted-array/,,,
+114,Valid Palindrome,Strings,Easy,https://leetcode.com/problems/valid-palindrome/,,,
+115,Longest Common Prefix,Strings,Easy,https://leetcode.com/problems/longest-common-prefix/,,,
+116,Roman to Integer,Strings,Easy,https://leetcode.com/problems/roman-to-integer/,,,
+117,Implement Queue using Stacks,Stack,Easy,https://leetcode.com/problems/implement-queue-using-stacks/,,,
+118,First Bad Version,Binary Search,Easy,https://leetcode.com/problems/first-bad-version/,,,
+119,Search Insert Position,Binary Search,Easy,https://leetcode.com/problems/search-insert-position/,,,
+120,Fibonacci Number,Dynamic Programming,Easy,https://leetcode.com/problems/fibonacci-number/,,,
+121,Flood Fill,Graphs,Easy,https://leetcode.com/problems/flood-fill/,,,
+122,Number of 1 Bits,Bit Manipulation,Easy,https://leetcode.com/problems/number-of-1-bits/,,,
+123,Single Number,Bit Manipulation,Easy,https://leetcode.com/problems/single-number/,,,
+124,Rotate Array,Arrays,Medium,https://leetcode.com/problems/rotate-array/,,,
+125,Simplify Path,Stack,Medium,https://leetcode.com/problems/simplify-path/,,,
+126,Copy List with Random Pointer,Linked List,Medium,https://leetcode.com/problems/copy-list-with-random-pointer/,,,
+127,Lowest Common Ancestor of a Binary Tree,Trees,Medium,https://leetcode.com/problems/lowest-common-ancestor-of-a-binary-tree/,,,
+128,Inorder Successor in BST,Trees,Medium,https://leetcode.com/problems/inorder-successor-in-bst/,,,
+129,Find Minimum in Rotated Sorted Array,Binary Search,Medium,https://leetcode.com/problems/find-minimum-in-rotated-sorted-array/,,,
+130,Search a 2D Matrix,Binary Search,Medium,https://leetcode.com/problems/search-a-2d-matrix/,,,
+131,Find Peak Element,Binary Search,Medium,https://leetcode.com/problems/find-peak-element/,,,
+132,Find K Closest Elements,Heaps,Medium,https://leetcode.com/problems/find-k-closest-elements/,,,
+133,House Robber II,Dynamic Programming,Medium,https://leetcode.com/problems/house-robber-ii/,,,
+134,Permutation in String,Sliding Window,Medium,https://leetcode.com/problems/permutation-in-string/,,,
+135,Design Browser History,Design,Medium,https://leetcode.com/problems/design-browser-history/,,,
+136,Sort Colors,Two Pointers,Medium,https://leetcode.com/problems/sort-colors/,,,
+137,Remove Duplicates from Sorted Array II,Two Pointers,Medium,https://leetcode.com/problems/remove-duplicates-from-sorted-array-ii/,,,
+138,Sum of Two Integers,Bit Manipulation,Medium,https://leetcode.com/problems/sum-of-two-integers/,,,
+139,First Missing Positive,Arrays,Hard,https://leetcode.com/problems/first-missing-positive/,,,
+140,Valid Number,Strings,Hard,https://leetcode.com/problems/valid-number/,,,
+141,Split Array Largest Sum,Binary Search,Hard,https://leetcode.com/problems/split-array-largest-sum/,,,
+142,Bus Routes,Graphs,Hard,https://leetcode.com/problems/bus-routes/,,,
+143,Shortest Path in a Grid with Obstacles Elimination,Graphs,Hard,https://leetcode.com/problems/shortest-path-in-a-grid-with-obstacles-elimination/,,,
+144,N-Queens,Backtracking,Hard,https://leetcode.com/problems/n-queens/,,,
+145,Word Search II,Backtracking,Hard,https://leetcode.com/problems/word-search-ii/,,,
+146,Longest Valid Parentheses,Dynamic Programming,Hard,https://leetcode.com/problems/longest-valid-parentheses/,,,
+147,LFU Cache,Design,Hard,https://leetcode.com/problems/lfu-cache/,,,
+148,Critical Connections in a Network,Advanced,Hard,https://leetcode.com/problems/critical-connections-in-a-network/,,,
+149,Subarray Sum Equals K,Hashing,Medium,https://leetcode.com/problems/subarray-sum-equals-k/,,,
+150,Populating Next Right Pointers in Each Node,Trees,Medium,https://leetcode.com/problems/populating-next-right-pointers-in-each-node/,,,
+151,Gas Station,Greedy,Medium,https://leetcode.com/problems/gas-station/,,,
+152,Number of Steps to Reduce a Number to Zero,Bit Manipulation,Medium,https://leetcode.com/problems/number-of-steps-to-reduce-a-number-to-zero/,,,
+153,Partition List,Linked List,Medium,https://leetcode.com/problems/partition-list/,,,
+154,3Sum Closest,Two Pointers,Medium,https://leetcode.com/problems/3sum-closest/,,,
+155,Divide Two Integers,Math,Medium,https://leetcode.com/problems/divide-two-integers/,,,
+156,Permutations II,Recursion,Medium,https://leetcode.com/problems/permutations-ii/,,,
+157,Binary Tree Postorder Traversal,Trees,Medium,https://leetcode.com/problems/binary-tree-postorder-traversal/,,,
+158,Maximal Square,DP,Medium,https://leetcode.com/problems/maximal-square/,,,
+159,Path Sum II,Trees,Medium,https://leetcode.com/problems/path-sum-ii/,,,
+160,Merge Sorted Array,Sorting,Medium,https://leetcode.com/problems/merge-sorted-array/,,,
+161,Find All Duplicates in an Array,Arrays,Medium,https://leetcode.com/problems/find-all-duplicates-in-an-array/,,,
+162,Minimum Remove to Make Valid Parentheses,String,Medium,https://leetcode.com/problems/minimum-remove-to-make-valid-parentheses/,,,
+163,Basic Calculator II,Stack,Medium,https://leetcode.com/problems/basic-calculator-ii/,,,
+164,Contiguous Array,Arrays,Medium,https://leetcode.com/problems/contiguous-array/,,,
+165,Serialize and Deserialize BST,Trees,Medium,https://leetcode.com/problems/serialize-and-deserialize-bst/,,,
+166,Design Twitter,Design,Medium,https://leetcode.com/problems/design-twitter/,,,
+167,Combination Sum II,Backtracking,Medium,https://leetcode.com/problems/combination-sum-ii/,,,
+168,Maximum Area of a Piece of Cake After Horizontal and Vertical Cuts,Arrays,Medium,https://leetcode.com/problems/maximum-area-of-a-piece-of-cake-after-horizontal-and-vertical-cuts/,,,
+169,Angle Between Hands of a Clock,Math,Medium,https://leetcode.com/problems/angle-between-hands-of-a-clock/,,,
+170,Top K Frequent Words,Trie,Medium,https://leetcode.com/problems/top-k-frequent-words/,,,
+171,Find All Anagrams in a String,Sliding Window,Medium,https://leetcode.com/problems/find-all-anagrams-in-a-string/,,,
+172,Reorganize String,Heap,Medium,https://leetcode.com/problems/reorganize-string/,,,
