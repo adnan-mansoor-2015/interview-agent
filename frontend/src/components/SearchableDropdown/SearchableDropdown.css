@@ -1,0 +1,173 @@
+/* ── SearchableDropdown ────────────────────────────────── */
+
+.sd-container {
+  position: relative;
+  min-width: 180px;
+  max-width: 280px;
+}
+
+.sd-disabled {
+  opacity: 0.5;
+  pointer-events: none;
+}
+
+/* Trigger button */
+.sd-trigger {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  background: #334155;
+  color: #94a3b8;
+  border: 1px solid #475569;
+  border-radius: 8px;
+  padding: 8px 12px;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: border-color 0.2s, box-shadow 0.2s;
+  gap: 8px;
+}
+
+.sd-trigger.sd-has-value {
+  color: #e2e8f0;
+}
+
+.sd-trigger:hover {
+  border-color: #6366f1;
+}
+
+.sd-trigger.sd-open {
+  border-color: #6366f1;
+  box-shadow: 0 0 0 2px rgba(99, 102, 241, 0.3);
+}
+
+.sd-trigger-label {
+  flex: 1;
+  text-align: left;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.sd-chevron {
+  font-size: 0.65rem;
+  color: #94a3b8;
+  flex-shrink: 0;
+}
+
+/* Dropdown panel */
+.sd-panel {
+  position: absolute;
+  top: calc(100% + 4px);
+  left: 0;
+  right: 0;
+  background: #1e293b;
+  border: 1px solid #475569;
+  border-radius: 8px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+  z-index: 100;
+  overflow: hidden;
+  animation: sd-fade-in 0.15s ease-out;
+}
+
+@keyframes sd-fade-in {
+  from {
+    opacity: 0;
+    transform: translateY(-4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Search input */
+.sd-search-wrapper {
+  padding: 8px;
+  border-bottom: 1px solid #334155;
+}
+
+.sd-search {
+  width: 100%;
+  background: #0f172a;
+  color: #e2e8f0;
+  border: 1px solid #334155;
+  border-radius: 6px;
+  padding: 6px 10px;
+  font-size: 0.85rem;
+  outline: none;
+  box-sizing: border-box;
+}
+
+.sd-search:focus {
+  border-color: #6366f1;
+}
+
+.sd-search::placeholder {
+  color: #64748b;
+}
+
+/* Option list */
+.sd-list {
+  list-style: none;
+  margin: 0;
+  padding: 4px 0;
+  max-height: 220px;
+  overflow-y: auto;
+}
+
+.sd-list::-webkit-scrollbar {
+  width: 6px;
+}
+
+.sd-list::-webkit-scrollbar-thumb {
+  background: #475569;
+  border-radius: 3px;
+}
+
+.sd-option {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 12px;
+  cursor: pointer;
+  color: #e2e8f0;
+  font-size: 0.9rem;
+  transition: background 0.1s;
+  gap: 8px;
+}
+
+.sd-option:hover,
+.sd-highlighted {
+  background: #334155;
+}
+
+.sd-selected {
+  color: #6366f1;
+  font-weight: 600;
+}
+
+.sd-option-label {
+  flex: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* Progress badge */
+.sd-badge {
+  font-size: 0.75rem;
+  color: #94a3b8;
+  background: #0f172a;
+  padding: 2px 8px;
+  border-radius: 10px;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.sd-no-results {
+  padding: 12px;
+  color: #64748b;
+  text-align: center;
+  font-size: 0.85rem;
+}

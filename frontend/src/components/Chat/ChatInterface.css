@@ -7,11 +7,17 @@
 
 .chat-header {
   display: flex;
-  align-items: center;
-  gap: 20px;
-  padding: 20px 24px;
+  flex-direction: column;
+  padding: 16px 24px;
   background: #1e293b;
   border-bottom: 2px solid #334155;
+  gap: 12px;
+}
+
+.header-top {
+  display: flex;
+  align-items: center;
+  gap: 16px;
 }
 
 .back-button {
@@ -23,6 +29,7 @@
   cursor: pointer;
   font-size: 0.95rem;
   transition: background 0.2s;
+  flex-shrink: 0;
 }
 
 .back-button:hover {
@@ -33,7 +40,45 @@
   font-size: 1.3rem;
   color: #f1f5f9;
   margin: 0;
+  flex: 1;
 }
+
+.overall-progress {
+  font-size: 0.85rem;
+  color: #94a3b8;
+  background: #334155;
+  padding: 6px 12px;
+  border-radius: 6px;
+  white-space: nowrap;
+}
+
+.progress-btn {
+  background: #334155;
+  color: #6366f1;
+  border: 1px solid #6366f1;
+  border-radius: 8px;
+  padding: 8px 16px;
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition: all 0.2s;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.progress-btn:hover {
+  background: #6366f1;
+  color: white;
+}
+
+/* ── Dropdown navigation ──────────────────────────────── */
+
+.topic-dropdowns {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+/* ── Messages area ────────────────────────────────────── */
 
 .chat-messages {
   flex: 1;

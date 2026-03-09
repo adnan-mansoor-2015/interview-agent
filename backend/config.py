@@ -1,9 +1,17 @@
+"""Application configuration — environment variables, model chains, and defaults.
+
+All settings are read from environment variables at import time.
+Copy ``.env.example`` to ``.env`` and fill in your API keys.
+"""
+
+from __future__ import annotations
+
 import os
 from dotenv import load_dotenv
 
 load_dotenv(override=True)
 
-# LLM Provider Configuration
+# ── LLM Provider ────────────────────────────────────────────────────
 LLM_PROVIDER = os.getenv("LLM_PROVIDER", "gemini")  # "gemini" or "anthropic"
 
 # Google Gemini Configuration

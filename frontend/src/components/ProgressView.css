@@ -1,0 +1,403 @@
+.progress-view {
+  min-height: 100vh;
+  background: #0f172a;
+  display: flex;
+  flex-direction: column;
+}
+
+.progress-loading {
+  color: #94a3b8;
+  text-align: center;
+  padding: 80px 24px;
+  font-size: 1.1rem;
+}
+
+/* ── Header ─────────────────────────────────────────── */
+
+.progress-header {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 20px 24px;
+  background: #1e293b;
+  border-bottom: 2px solid #334155;
+}
+
+.progress-header .back-button {
+  background: #334155;
+  color: #e2e8f0;
+  border: none;
+  border-radius: 8px;
+  padding: 10px 20px;
+  cursor: pointer;
+  font-size: 0.95rem;
+  transition: background 0.2s;
+  flex-shrink: 0;
+}
+
+.progress-header .back-button:hover {
+  background: #475569;
+}
+
+.progress-header h2 {
+  font-size: 1.3rem;
+  color: #f1f5f9;
+  margin: 0;
+  flex: 1;
+}
+
+/* ── Reset buttons ─────────────────────────────────── */
+
+.reset-actions {
+  display: flex;
+  gap: 8px;
+  flex-shrink: 0;
+}
+
+.reset-btn {
+  background: transparent;
+  color: #ef4444;
+  border: 1px solid #ef4444;
+  border-radius: 6px;
+  padding: 8px 16px;
+  font-size: 0.8rem;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.reset-btn:hover {
+  background: #ef4444;
+  color: white;
+}
+
+.reset-btn.reset-all {
+  color: #f59e0b;
+  border-color: #f59e0b;
+}
+
+.reset-btn.reset-all:hover {
+  background: #f59e0b;
+  color: #0f172a;
+}
+
+/* ── Confirm dialog ────────────────────────────────── */
+
+.confirm-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 100;
+}
+
+.confirm-dialog {
+  background: #1e293b;
+  border: 1px solid #334155;
+  border-radius: 12px;
+  padding: 28px 32px;
+  max-width: 400px;
+  width: 90%;
+}
+
+.confirm-message {
+  color: #f1f5f9;
+  font-size: 1rem;
+  margin-bottom: 24px;
+  line-height: 1.5;
+}
+
+.confirm-actions {
+  display: flex;
+  gap: 12px;
+  justify-content: flex-end;
+}
+
+.confirm-cancel {
+  background: #334155;
+  color: #e2e8f0;
+  border: none;
+  border-radius: 8px;
+  padding: 10px 20px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  transition: background 0.2s;
+}
+
+.confirm-cancel:hover {
+  background: #475569;
+}
+
+.confirm-ok {
+  background: #ef4444;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  padding: 10px 20px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  font-weight: 600;
+  transition: background 0.2s;
+}
+
+.confirm-ok:hover {
+  background: #dc2626;
+}
+
+/* ── Summary stats ──────────────────────────────────── */
+
+.progress-summary {
+  display: flex;
+  align-items: center;
+  gap: 32px;
+  padding: 24px 32px;
+  background: #1e293b;
+  margin: 24px;
+  border-radius: 12px;
+  flex-wrap: wrap;
+}
+
+.summary-stat {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-width: 80px;
+}
+
+.stat-number {
+  font-size: 2rem;
+  font-weight: 700;
+  color: #f1f5f9;
+}
+
+.stat-label {
+  font-size: 0.8rem;
+  color: #94a3b8;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.summary-bar {
+  flex: 1;
+  min-width: 200px;
+}
+
+/* ── Progress bars ──────────────────────────────────── */
+
+.progress-bar-container {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex: 1;
+  min-width: 100px;
+}
+
+.progress-bar-track {
+  flex: 1;
+  height: 8px;
+  background: #334155;
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.progress-bar-fill {
+  height: 100%;
+  background: #10b981;
+  border-radius: 4px;
+  transition: width 0.3s ease;
+}
+
+.progress-bar-label {
+  font-size: 0.8rem;
+  color: #94a3b8;
+  white-space: nowrap;
+  min-width: 90px;
+  text-align: right;
+}
+
+/* ── Collapsible tree ───────────────────────────────── */
+
+.progress-tree {
+  padding: 0 24px 24px;
+  flex: 1;
+  overflow-y: auto;
+}
+
+.section {
+  margin-bottom: 2px;
+}
+
+.section-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 16px;
+  background: #1e293b;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+
+.section-header:hover {
+  background: #253348;
+}
+
+.depth-1 .section-header {
+  padding-left: 32px;
+}
+
+.depth-2 .section-header {
+  padding-left: 48px;
+}
+
+.depth-3 .section-header {
+  padding-left: 64px;
+}
+
+.chevron {
+  font-size: 0.7rem;
+  color: #64748b;
+  transition: transform 0.2s;
+  display: inline-block;
+  width: 12px;
+  flex-shrink: 0;
+}
+
+.chevron.expanded {
+  transform: rotate(90deg);
+}
+
+.section-name {
+  font-size: 0.95rem;
+  color: #e2e8f0;
+  font-weight: 500;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 300px;
+}
+
+.practice-btn {
+  background: #334155;
+  color: #6366f1;
+  border: 1px solid #6366f1;
+  border-radius: 6px;
+  padding: 4px 12px;
+  font-size: 0.75rem;
+  cursor: pointer;
+  transition: all 0.2s;
+  flex-shrink: 0;
+  margin-left: auto;
+}
+
+.practice-btn:hover {
+  background: #6366f1;
+  color: white;
+}
+
+.section-body {
+  margin-top: 2px;
+}
+
+/* ── Leaf items ─────────────────────────────────────── */
+
+.items-list {
+  padding: 4px 0;
+}
+
+.items-list.top-level {
+  padding: 0;
+}
+
+.item-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 16px 8px 64px;
+  font-size: 0.88rem;
+  color: #cbd5e1;
+  transition: background 0.15s;
+}
+
+.depth-1 .item-row {
+  padding-left: 80px;
+}
+
+.depth-2 .item-row {
+  padding-left: 96px;
+}
+
+.top-level .item-row {
+  padding-left: 16px;
+  padding-top: 12px;
+  padding-bottom: 12px;
+  background: #1e293b;
+  border-radius: 8px;
+  margin-bottom: 2px;
+}
+
+.item-row:hover {
+  background: rgba(30, 41, 59, 0.5);
+}
+
+.item-row.covered {
+  color: #64748b;
+}
+
+.item-row.covered .item-name {
+  text-decoration: line-through;
+  text-decoration-color: #475569;
+}
+
+.item-icon {
+  font-size: 0.9rem;
+  width: 18px;
+  text-align: center;
+  flex-shrink: 0;
+  color: #475569;
+}
+
+.item-icon.checked {
+  color: #10b981;
+}
+
+.item-name {
+  flex: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.difficulty-badge {
+  font-size: 0.7rem;
+  padding: 2px 8px;
+  border-radius: 4px;
+  font-weight: 600;
+  text-transform: uppercase;
+  flex-shrink: 0;
+}
+
+.difficulty-badge.easy {
+  background: rgba(16, 185, 129, 0.15);
+  color: #10b981;
+}
+
+.difficulty-badge.medium {
+  background: rgba(245, 158, 11, 0.15);
+  color: #f59e0b;
+}
+
+.difficulty-badge.hard {
+  background: rgba(239, 68, 68, 0.15);
+  color: #ef4444;
+}
+
+.company-badge {
+  font-size: 0.7rem;
+  padding: 2px 8px;
+  border-radius: 4px;
+  background: rgba(99, 102, 241, 0.15);
+  color: #818cf8;
+  flex-shrink: 0;
+}

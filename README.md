@@ -1,15 +1,6 @@
 # AI Interview Prep Agent
 
-Conversational interview practice with 4 AI agents (Coach, Evaluator, Question Curator, Orchestrator). Supports behavioral, technical, coding, and system design categories.
-
-Powered by Google Gemini with automatic multi-model fallback on rate limits.
-
-## Prerequisites
-
-- Python 3.10+
-- Node.js 18+
-- Google Gemini API key ([get one free](https://aistudio.google.com/apikey))
-- Redis (optional — falls back to in-memory)
+Conversational interview practice powered by 4 AI agents: **Coach**, **Evaluator**, **Question Curator**, and **Orchestrator**. Covers behavioral, technical, coding, and system design categories with per-user progress tracking.
 
 ## Quick Start
 
@@ -21,9 +12,7 @@ python -m venv venv
 source venv/bin/activate
 pip install -r requirements.txt
 
-cp .env.example .env
-# Edit .env → set GEMINI_API_KEY=your_key
-
+cp .env.example .env   # set GEMINI_API_KEY (required)
 uvicorn app:app --reload --port 8000
 ```
 
@@ -40,17 +29,95 @@ npm start
 
 ```bash
 curl http://localhost:8000/health
-# → {"status":"healthy"}
+# {"status":"healthy"}
 ```
 
-## Usage
+## Configuration
 
-1. Open http://localhost:3000
-2. Pick a category (Behavioral, Technical, Coding, System Design)
-3. Answer the question via text or voice
-4. The coach asks short follow-ups like a real interviewer
-5. Click "Evaluate" for a scored breakdown with feedback
-6. Click "Next Question" to continue
+| Variable | Default | Description |
+|----------|---------|-------------|
+| `LLM_PROVIDER` | `gemini` | `"gemini"` or `"anthropic"` |
+| `GEMINI_API_KEY` | — | Google AI Studio key ([get one free](https://aistudio.google.com/apikey)) |
+| `ANTHROPIC_API_KEY` | — | Required only if `LLM_PROVIDER=anthropic` |
+| `REDIS_URL` | `redis://localhost:6379` | Optional — falls back to in-memory |
+| `ENVIRONMENT` | `development` | Set to `production` to disable debug |
+
+## Architecture
+
+```
+frontend/ (React :3000)
+├── App.js                              # Login → Home → Chat → Progress views
+├── services/api.js                     # HTTP client
+└── components/
+    ├── LoginPage.js                    # Email login
+    ├── CategorySelector.js             # Category cards
+    ├── ProgressView.js                 # Collapsible progress tree
+    ├── SearchableDropdown/             # Custom dropdown with search + badges
+    ├── Breadcrumb/                     # Selection path trail
+    └── Chat/
+        ├── ChatInterface.js            # Main chat + dropdown navigation
+        ├── MessageBubble.js            # Message rendering
+        ├── InputArea.js                # Text input
+        ├── VoiceRecorder.js            # Speech-to-text
+        └── ImageUploader.js            # Diagram upload
+
+backend/ (FastAPI :8000)
+├── app.py                              # REST API routes
+├── config.py                           # Env vars, model chains
+├── agents/
+│   ├── orchestrator.py                 # Phase-based message router
+│   ├── question_curator.py             # Thin router → question_sources/
+│   ├── interview_coach.py              # Follow-up questions
+│   └── evaluator.py                    # Answer scoring (text + vision)
+├── question_sources/                   # ← QuestionSource protocol
+│   ├── protocol.py                     # QuestionSource Protocol definition
+│   ├── utils.py                        # Shared helpers (CSV, JSON, hashing)
+│   ├── behavioral.py                   # BehavioralCSVSource
+│   ├── technical.py                    # TechnicalCSVSource (uses LLM)
+│   ├── coding.py                       # CodingCSVSource
+│   └── system_design.py               # SystemDesignCSVSource
+├── services/
+│   ├── llm/                            # ← LLMProvider protocol
+│   │   ├── protocol.py                 # LLMProvider Protocol definition
+│   │   ├── gemini.py                   # GeminiClient (auto-fallback)
+│   │   ├── anthropic.py                # AnthropicClient
+│   │   └── __init__.py                 # Factory: create_llm_client()
+│   ├── claude_client.py                # Backward-compat shim
+│   ├── session_store.py                # Redis / in-memory sessions
+│   └── progress_store.py              # Per-user JSON progress
+├── prompts/                            # System prompts per agent
+└── data/                               # CSV question banks
+```
+
+## How to Extend
+
+### Add an LLM Provider
+
+1. Create `backend/services/llm/my_provider.py`
+2. Implement the `LLMProvider` protocol: `send_message()`, `send_message_with_image()`, `extract_text()`
+3. Register in `backend/services/llm/__init__.py`
+
+### Add a Question Source
+
+1. Create `backend/question_sources/my_source.py`
+2. Implement the `QuestionSource` protocol: `get_question()`, `get_structure()`, `get_progress()`, `get_detailed_progress()`
+3. Register in `backend/agents/question_curator.py` under `_sources`
+
+### Add a New Category
+
+1. Create a `QuestionSource` implementation (see above)
+2. Add the category key to `question_curator.py._sources`
+3. Add a card in `frontend/src/components/CategorySelector.js`
+4. Add prompts in `backend/prompts/`
+
+## CSV Data Formats
+
+| File | Columns |
+|------|---------|
+| `behavioral_questions.csv` | Question, Company, Leadership_Principle, Priority, STAR_Focus |
+| `technical_topics.csv` | Priority, Category, Topic, Sub-Topic, Sub-Sub-Topic / Granular Depth Point |
+| `leetcode_questions.csv` | Title, Difficulty, Companies, URL, Optimal_Complexity, Category |
+| `system_design_questions.csv` | Question, Company, Key_Components, Scale_Requirements, LP_Hints, Priority |
 
 ## API Endpoints
 
@@ -61,40 +128,15 @@ curl http://localhost:8000/health
 | POST | `/api/chat/upload` | Upload diagram (system design) |
 | GET | `/api/session/{id}` | Get session data |
 | DELETE | `/api/session/{id}` | Delete session |
+| PUT | `/api/session/{id}/focus` | Update focus areas |
+| GET | `/api/session/{id}/progress` | Session progress |
+| GET | `/api/session/{id}/progress/detailed` | Detailed progress tree |
+| GET | `/api/categories/{category}/structure` | Topic hierarchy |
+| GET | `/api/progress/{category}` | Persistent progress |
+| GET | `/api/progress/{category}/detailed` | Persistent detailed progress |
+| DELETE | `/api/progress/{category}` | Reset category progress |
+| DELETE | `/api/progress` | Reset all progress |
 | GET | `/health` | Health check |
-
-## Project Structure
-
-```
-backend/
-├── app.py                  # FastAPI routes
-├── config.py               # Models, API keys, fallback chains
-├── agents/
-│   ├── orchestrator.py     # Routes messages between agents
-│   ├── question_curator.py # Picks questions from CSV banks
-│   ├── interview_coach.py  # Asks follow-up questions
-│   └── evaluator.py        # Scores answers (text + vision)
-├── prompts/                # System prompts for each agent
-├── services/
-│   ├── claude_client.py    # LLM client (Gemini/Claude + fallback)
-│   └── session_store.py    # Session management (Redis/in-memory)
-└── data/                   # CSV question banks
-
-frontend/
-├── src/
-│   ├── App.js              # Root component
-│   ├── services/api.js     # Backend API client
-│   └── components/
-│       ├── CategorySelector.js
-│       └── Chat/
-│           ├── ChatInterface.js
-│           ├── MessageBubble.js
-│           ├── InputArea.js
-│           ├── VoiceRecorder.js
-│           └── ImageUploader.js
-```
-
-See [OVERVIEW.md](OVERVIEW.md) for detailed file-by-file documentation.
 
 ## License
 
