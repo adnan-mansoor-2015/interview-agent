@@ -1,0 +1,42 @@
+/* ── Breadcrumb ────────────────────────────────────────── */
+
+.breadcrumb {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.85rem;
+  flex-wrap: wrap;
+}
+
+.breadcrumb-segment {
+  background: none;
+  border: none;
+  color: #6366f1;
+  cursor: pointer;
+  padding: 2px 4px;
+  border-radius: 4px;
+  font-size: 0.85rem;
+  transition: background 0.15s, color 0.15s;
+}
+
+.breadcrumb-segment:hover {
+  background: rgba(99, 102, 241, 0.15);
+  color: #818cf8;
+}
+
+.breadcrumb-segment:last-child {
+  color: #e2e8f0;
+  cursor: default;
+  font-weight: 600;
+}
+
+.breadcrumb-segment:last-child:hover {
+  background: none;
+  color: #e2e8f0;
+}
+
+.breadcrumb-sep {
+  color: #475569;
+  font-size: 0.8rem;
+  user-select: none;
+}

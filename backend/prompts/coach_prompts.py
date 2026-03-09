@@ -1,3 +1,8 @@
+"""System prompts for the Interview Coach agent."""
+
+from __future__ import annotations
+
+
 def get_coach_prompt(category: str, question_data: dict) -> str:
     """Generate system prompt for Interview Coach Agent."""
 

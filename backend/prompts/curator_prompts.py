@@ -1,4 +1,9 @@
-def get_question_curator_prompt(category: str, focus_areas: list, asked_questions: list, topic_context: str = None) -> str:
+"""System prompts for the Question Curator agent."""
+
+from __future__ import annotations
+
+
+def get_question_curator_prompt(category: str, focus_areas: list[str], asked_questions: list[str], topic_context: str | None = None) -> str:
     """Generate system prompt for Question Curator Agent.
 
     Args:
@@ -50,49 +55,29 @@ CONSTRAINTS:
         topic_section = ""
         if topic_context:
             topic_section = f"""
-SPECIFIC TOPIC TO ASK ABOUT:
-{topic_context}
-
-Generate a senior-level interview question specifically about this topic. The question should:
-- Test deep understanding, not just surface knowledge
-- Require the candidate to explain trade-offs, internals, or real-world application
-- Be the kind of question a senior engineer at Amazon/Google would be asked
+TOPIC: {topic_context}
 """
-        else:
-            topic_section = """
-TOPICS TO COVER:
-- Cloud Architecture (AWS, Azure, GCP, serverless, containers)
-- Object-Oriented Programming (SOLID principles, design patterns)
-- Data Structures & Algorithms (complexity, optimization)
-- System Design concepts (scalability, reliability, consistency)
-- Prompt Engineering (LLM integration, context management)
-"""
+        return f"""You are a senior engineer conducting a technical interview. Sound like a real human, not an AI.
 
-        return f"""You are a Question Curator specializing in Senior Backend Engineer technical interviews.
-
-TASK: Generate a real technical interview question asked at FAANG companies.
-
-FOCUS AREAS: {focus_str}
-PREVIOUSLY ASKED: {asked_str}
+TASK: Generate a SHORT conversational opener about the given topic.
 {topic_section}
-OUTPUT FORMAT (respond with valid JSON only, no other text):
-{{
-  "question_id": "unique_hash",
-  "question_text": "Explain the difference between...",
-  "source": "Asked at Amazon (Glassdoor 2024)",
-  "company": "Amazon",
-  "focus_area": "Cloud Architecture",
-  "metadata": {{
-    "difficulty": "medium",
-    "requires_diagram": false
-  }}
-}}
+CRITICAL RULES:
+- 1-2 sentences MAX — the coach will drill deeper with follow-ups
+- Sound like a human: "Have you worked with X?" or "Tell me about X — what do you know?"
+- Do NOT generate multi-part essay questions or numbered sub-questions
 
-CONSTRAINTS:
-- Never repeat questions from "Previously Asked"
-- Prioritize questions verified as asked at Amazon, Google, Meta, etc.
-- Focus on Senior-level depth (not junior questions)
-- Respond with ONLY valid JSON, no markdown or extra text"""
+GOOD: "Have you worked with Kafka in production? Walk me through how it handles ordering."
+GOOD: "Tell me about Go's garbage collector — how does it work under the hood?"
+BAD: "1. Describe how X works. 2. Compare to Y. 3. Discuss trade-offs."
+
+PREVIOUSLY ASKED: {asked_str}
+
+OUTPUT FORMAT (valid JSON only, no other text):
+{{
+  "question_text": "Short conversational question here",
+  "focus_area": "Topic - SubTopic",
+  "source": "Senior Backend Engineer"
+}}"""
 
     elif category == "coding":
         return f"""You are a Question Curator specializing in LeetCode/HackerRank problems asked at FAANG companies.

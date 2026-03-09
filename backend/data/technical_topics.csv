@@ -1,30 +1,30 @@
 Priority,Category,Topic,Sub-Topic,Sub-Sub-Topic / Granular Depth Point
-1,Language Internals,Golang,Concurrency,The G-M-P Scheduler (Goroutine-Machine-Processor)
-1,Language Internals,Golang,Concurrency,Work-Stealing Algorithm in the Go Runtime
-1,Language Internals,Golang,Concurrency,Network Poller (epoll/kqueue) interaction with Goroutines
-1,Language Internals,Golang,Concurrency,Preemption (Synchronous vs. Asynchronous)
-1,Language Internals,Golang,Memory,Escape Analysis (Stack vs. Heap allocation rules)
-1,Language Internals,Golang,Memory,TCMalloc-based memory allocator (mspan, mcache, mcentral)
-1,Language Internals,Golang,Memory,Garbage Collection: Tri-color Mark & Sweep
-1,Language Internals,Golang,Memory,Garbage Collection: The Write Barrier mechanism
-1,Language Internals,Golang,Memory,Garbage Collection: Pacer and Termination phases
-1,Language Internals,Golang,Data Structures,Slice Header (Pointer, Len, Cap) and Growth logic
-1,Language Internals,Golang,Data Structures,Map Internals: HMAP, BMAP, and Bucket Overflow
-1,Language Internals,Golang,Data Structures,Map Evacuation during incremental growth
-1,Language Internals,Golang,Types,Interface values (eface vs iface) and itab lookups
-1,Language Internals,Golang,Types,Reflection: The cost of Type-assertion vs. reflect package
-1,Language Internals,Golang,Standard Lib,Context Propagation (withTimeout, withCancel)
-1,Language Internals,Golang,Standard Lib,sync.Pool: Reducing GC pressure for high-throughput
-1,Language Internals,Golang,Standard Lib,Atomic Operations vs Mutex (CAS - Compare and Swap)
-1,Language Internals,Python,Execution,The Global Interpreter Lock (GIL) and bytecode execution
-1,Language Internals,Python,Execution,AsyncIO Event Loop: Task vs Future vs Coroutine
-1,Language Internals,Python,Execution,The 'Awaitable' protocol and __await__ method
-1,Language Internals,Python,Memory,Reference Counting and the Cycle Detector
-1,Language Internals,Python,Memory,Generational Garbage Collection (Gen 0, 1, 2)
-1,Language Internals,Python,Memory,Interning (Small integers and String interning)
-1,Language Internals,Python,Advanced,Metaclasses and Type-creation hooks
-1,Language Internals,Python,Advanced,Method Resolution Order (MRO) and C3 Linearization
-1,Language Internals,Python,Advanced,Context Managers (__enter__ / __exit__) and scope
+1,Language Internals,Runtime,Memory,Stack vs. Heap allocation overhead and fragmentation.
+1,Language Internals,Runtime,Memory,Escape Analysis: How the compiler determines where data lives.
+1,Language Internals,Runtime,Memory,Object header overhead (locking bits, type pointers).
+1,Language Internals,Runtime,GC,Stop-The-World (STW) pauses and concurrent marking.
+1,Language Internals,Runtime,GC,Generational Hypothesis (Young vs. Old Generation GC).
+1,Language Internals,Runtime,GC,Tri-color Mark & Sweep algorithms.
+1,Language Internals,Runtime,GC,Finalization and why it is a "leaky" abstraction.
+1,Language Internals,Execution,Concurrency,OS Threads vs. Green Threads (M:N scheduling).
+1,Language Internals,Execution,Concurrency,The "Happens-Before" relationship and memory visibility.
+1,Language Internals,Execution,Concurrency,CAS (Compare-And-Swap) vs. Mutex/Lock contention.
+1,Language Internals,Execution,Concurrency,Thread context switch overhead (Register saving, TLB flushes).
+1,Language Internals,Execution,Async,State Machines: How await generates behind-the-scenes logic.
+1,Language Internals,Execution,Async,Event Loop internals (Reactor vs. Proactor patterns).
+1,Language Internals,Execution,Compilation,JIT (Just-In-Time) vs. AOT (Ahead-Of-Time) trade-offs.
+1,Language Internals,Execution,Compilation,"Function Inlining: Why it is the ""mother of optimizations."""
+2,Language Internals,Data Str,Maps,Collision resolution: Chaining vs. Open Addressing.
+2,Language Internals,Data Str,Arrays,Dynamic growth logic (1.5x/2x) and amortized O(1) complexity.
+2,Language Internals,Data Str,Memory,Data alignment and struct padding (CPU Cache Locality).
+2,Language Internals,Data Str,Strings,String interning and the cost of immutability.
+2,Language Internals,Types,Polymorphism,Static vs. Dynamic Dispatch (vTables/Interface lookups).
+2,Language Internals,Types,Types,Boxing/Unboxing performance penalties.
+2,Language Internals,Types,Types,Covariance/Contravariance in generic type systems.
+3,Language Internals,Networking,I/O,"epoll/kqueue and the ""C10k"" problem."
+3,Language Internals,Networking,FFI,"The ""CGO/JNI Tax"": Overhead of calling native code."
+3,Language Internals,Advanced,Safety,Memory Safety: How runtimes prevent buffer overflows.
+3,Language Internals,Advanced,Advanced,Object Pooling: When and why to bypass the runtime allocator.
 1,AI Productivity,Prompt Engineering,Core Patterns,Zero-shot vs Few-shot Prompting for code generation
 1,AI Productivity,Prompt Engineering,Core Patterns,Chain-of-Thought (CoT) for logical reasoning in refactoring
 1,AI Productivity,Prompt Engineering,Core Patterns,System Prompts: Defining Persona and Constraints

@@ -1,12 +1,14 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { api } from '../../services/api';
 import MessageBubble from './MessageBubble';
 import InputArea from './InputArea';
 import VoiceRecorder from './VoiceRecorder';
 import ImageUploader from './ImageUploader';
+import SearchableDropdown from '../SearchableDropdown/SearchableDropdown';
+import Breadcrumb from '../Breadcrumb/Breadcrumb';
 import './ChatInterface.css';
 
-function ChatInterface({ category, onBack, sessionId, setSessionId }) {
+function ChatInterface({ category, onBack, sessionId, setSessionId, initialFocusAreas, onViewProgress, userEmail }) {
   const [messages, setMessages] = useState([]);
   const [currentMessage, setCurrentMessage] = useState('');
   const [loading, setLoading] = useState(false);
@@ -14,6 +16,45 @@ function ChatInterface({ category, onBack, sessionId, setSessionId }) {
   const [showNextButton, setShowNextButton] = useState(false);
   const messagesEndRef = useRef(null);
   const initCalledRef = useRef(false);
+
+  // Dropdown navigation state
+  const [structure, setStructure] = useState(null);
+  const [progress, setProgress] = useState(null);
+  const [level1, setLevel1] = useState('');
+  const [level2, setLevel2] = useState('');
+  const [level3, setLevel3] = useState('');
+
+  // Determine how many dropdown levels this category needs
+  const getDropdownLevels = () => {
+    if (category === 'technical') return 3;
+    if (category === 'behavioral') return 2;
+    if (category === 'coding') return 1;
+    return 0; // system-design: flat, no dropdowns
+  };
+
+  const dropdownLevels = getDropdownLevels();
+
+  // Fetch category structure on mount
+  useEffect(() => {
+    if (dropdownLevels > 0) {
+      api.getCategoryStructure(category).then((res) => {
+        if (res.structure) setStructure(res.structure);
+      });
+    }
+  }, [category, dropdownLevels]);
+
+  // Refresh progress after session exists
+  const refreshProgress = useCallback(() => {
+    if (sessionId) {
+      api.getProgress(sessionId).then((res) => {
+        if (res.progress) setProgress(res.progress);
+      });
+    }
+  }, [sessionId]);
+
+  useEffect(() => {
+    refreshProgress();
+  }, [refreshProgress]);
 
   useEffect(() => {
     // Start session when component mounts (guard against StrictMode double-mount)
@@ -34,7 +75,7 @@ function ChatInterface({ category, onBack, sessionId, setSessionId }) {
   const initializeSession = async () => {
     setLoading(true);
     try {
-      const response = await api.startSession(category, []);
+      const response = await api.startSession(category, initialFocusAreas || [], userEmail || '');
       setSessionId(response.session_id);
 
       if (response.response && response.response.message) {
@@ -70,6 +111,11 @@ function ChatInterface({ category, onBack, sessionId, setSessionId }) {
       if (response.response && response.response.message) {
         addMessage('assistant', response.response.message);
         updateButtonStates(response.response);
+
+        // Refresh progress after evaluation
+        if (response.response.phase === 'question_needed') {
+          refreshProgress();
+        }
       }
     } catch (error) {
       addMessage('system', `Error: ${error.message}`);
@@ -112,23 +158,193 @@ function ChatInterface({ category, onBack, sessionId, setSessionId }) {
     setShowNextButton(false);
   };
 
+  // ── Dropdown handlers ──────────────────────────────────────────
+
+  const applyFocusAndNext = async (focusAreas, label) => {
+    if (!sessionId) return;
+    await api.updateFocusAreas(sessionId, focusAreas);
+    addMessage('system', `Switched to: ${label}`);
+    setShowEvaluateButton(false);
+    setShowNextButton(false);
+    handleSendMessage('next');
+  };
+
+  const handleLevel1Change = (value) => {
+    setLevel1(value);
+    setLevel2('');
+    setLevel3('');
+    if (!value) return;
+
+    if (dropdownLevels === 1) {
+      // Coding: 1 level — apply immediately
+      applyFocusAndNext([value], value);
+    }
+  };
+
+  const handleLevel2Change = (value) => {
+    setLevel2(value);
+    setLevel3('');
+    if (!value) return;
+
+    if (dropdownLevels === 2) {
+      // Behavioral: 2 levels — apply on level 2 selection
+      applyFocusAndNext([level1, value], `${level1} > ${value}`);
+    }
+  };
+
+  const handleLevel3Change = (value) => {
+    setLevel3(value);
+    if (!value) return;
+
+    // Technical: 3 levels — apply on level 3 selection
+    applyFocusAndNext([level1, level2, value], `${level1} > ${level2} > ${value}`);
+  };
+
+  // ── Helpers for progress-annotated options ─────────────────────
+
+  const getProgressForLevel = (key, parentKey, grandparentKey) => {
+    if (!progress || !progress.levels) return null;
+    if (grandparentKey) {
+      return progress.levels[grandparentKey]?.children?.[parentKey]?.children?.[key];
+    }
+    if (parentKey) {
+      return progress.levels[parentKey]?.children?.[key];
+    }
+    return progress.levels[key];
+  };
+
+  // Convert raw keys into SearchableDropdown option objects
+  const buildOptions = (keys, parentKey, grandparentKey) => {
+    return keys.map((key) => {
+      const progressData = getProgressForLevel(key, parentKey, grandparentKey);
+      return {
+        value: key,
+        label: key,
+        progress: progressData && progressData.total
+          ? { covered: progressData.covered || 0, total: progressData.total }
+          : undefined,
+      };
+    });
+  };
+
+  // ── Build dropdown option lists ────────────────────────────────
+
+  const getLevel1Options = () => {
+    if (!structure) return [];
+    return Object.keys(structure).filter((k) => k !== 'total');
+  };
+
+  const getLevel2Options = () => {
+    if (!structure || !level1 || !structure[level1]?.children) return [];
+    return Object.keys(structure[level1].children);
+  };
+
+  const getLevel3Options = () => {
+    if (!structure || !level1 || !level2) return [];
+    return Object.keys(structure[level1]?.children?.[level2]?.children || {});
+  };
+
+  const getDropdownLabels = () => {
+    if (category === 'technical') return ['Category', 'Topic', 'Sub-Topic'];
+    if (category === 'behavioral') return ['Company', 'Leadership Principle'];
+    if (category === 'coding') return ['Category'];
+    return [];
+  };
+
+  const labels = getDropdownLabels();
+
   const getCategoryDisplay = () => {
     const categoryMap = {
-      behavioral: '💬 Behavioral (STAR)',
-      technical: '💻 Technical Knowledge',
-      coding: '🧩 Problem Solving',
-      'system-design': '🏗️ System Design',
+      behavioral: 'Behavioral (STAR)',
+      technical: 'Technical Knowledge',
+      coding: 'Problem Solving',
+      'system-design': 'System Design',
     };
     return categoryMap[category] || category;
+  };
+
+  // ── Build breadcrumb segments ──────────────────────────────────
+
+  const buildBreadcrumbs = () => {
+    const segments = [];
+    if (level1) {
+      segments.push({
+        label: level1,
+        onClick: () => { setLevel1(''); setLevel2(''); setLevel3(''); },
+      });
+    }
+    if (level2) {
+      segments.push({
+        label: level2,
+        onClick: () => { setLevel2(''); setLevel3(''); },
+      });
+    }
+    if (level3) {
+      segments.push({
+        label: level3,
+        onClick: () => { setLevel3(''); },
+      });
+    }
+    return segments;
   };
 
   return (
     <div className="chat-interface">
       <header className="chat-header">
-        <button className="back-button" onClick={onBack}>
-          ← Back
-        </button>
-        <h2>{getCategoryDisplay()}</h2>
+        <div className="header-top">
+          <button className="back-button" onClick={onBack}>
+            ← Back
+          </button>
+          <h2>{getCategoryDisplay()}</h2>
+          {progress && (
+            <span className="overall-progress">
+              {progress.covered}/{progress.total} covered ({progress.overall_percent}%)
+            </span>
+          )}
+          {onViewProgress && sessionId && (
+            <button className="progress-btn" onClick={onViewProgress}>
+              View All Topics
+            </button>
+          )}
+        </div>
+
+        {/* Breadcrumb trail */}
+        {dropdownLevels > 0 && (level1 || level2 || level3) && (
+          <Breadcrumb segments={buildBreadcrumbs()} />
+        )}
+
+        {/* Dropdown navigation */}
+        {dropdownLevels > 0 && structure && (
+          <div className="topic-dropdowns">
+            {/* Level 1 */}
+            <SearchableDropdown
+              value={level1}
+              onChange={handleLevel1Change}
+              options={buildOptions(getLevel1Options())}
+              placeholder={`All ${labels[0]}s`}
+            />
+
+            {/* Level 2 */}
+            {dropdownLevels >= 2 && level1 && (
+              <SearchableDropdown
+                value={level2}
+                onChange={handleLevel2Change}
+                options={buildOptions(getLevel2Options(), level1)}
+                placeholder={`All ${labels[1]}s`}
+              />
+            )}
+
+            {/* Level 3 */}
+            {dropdownLevels >= 3 && level2 && (
+              <SearchableDropdown
+                value={level3}
+                onChange={handleLevel3Change}
+                options={buildOptions(getLevel3Options(), level2, level1)}
+                placeholder={`All ${labels[2]}s`}
+              />
+            )}
+          </div>
+        )}
       </header>
 
       <div className="chat-messages">
@@ -144,12 +360,12 @@ function ChatInterface({ category, onBack, sessionId, setSessionId }) {
       <div className="chat-actions">
         {showEvaluateButton && (
           <button className="action-button evaluate" onClick={handleEvaluate}>
-            🎯 Evaluate My Answer
+            Evaluate My Answer
           </button>
         )}
         {showNextButton && (
           <button className="action-button next" onClick={handleNext}>
-            ⏭️ Next Question
+            Next Question
           </button>
         )}
       </div>

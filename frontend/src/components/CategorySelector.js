@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { api } from '../services/api';
 import './CategorySelector.css';
 
 const CATEGORIES = [
@@ -8,7 +9,6 @@ const CATEGORIES = [
     icon: '💬',
     description: 'Amazon & Google Leadership Principles',
     color: '#6366f1',
-    focusOptions: ['Amazon Leadership Principles', 'Google Googleyness'],
   },
   {
     id: 'technical',
@@ -16,7 +16,6 @@ const CATEGORIES = [
     icon: '💻',
     description: 'Senior Backend Engineer - Cloud, OOP, Algorithms',
     color: '#06b6d4',
-    focusOptions: ['Cloud Architecture', 'OOP & Design Patterns', 'Data Structures & Algorithms', 'Prompt Engineering'],
   },
   {
     id: 'coding',
@@ -24,7 +23,6 @@ const CATEGORIES = [
     icon: '🧩',
     description: 'LeetCode & HackerRank - FAANG problems',
     color: '#10b981',
-    focusOptions: [],
   },
   {
     id: 'system-design',
@@ -32,13 +30,32 @@ const CATEGORIES = [
     icon: '🏗️',
     description: 'Architecture & Scalability - FAANG questions',
     color: '#f59e0b',
-    focusOptions: [],
   },
 ];
 
 function CategorySelector({ onStart }) {
   const [selectedCategory, setSelectedCategory] = useState(null);
   const [selectedFocus, setSelectedFocus] = useState([]);
+  const [focusOptions, setFocusOptions] = useState([]);
+
+  // Load real categories from backend when a category is selected
+  useEffect(() => {
+    if (!selectedCategory) {
+      setFocusOptions([]);
+      return;
+    }
+    // system-design has no subcategories
+    if (selectedCategory.id === 'system-design') {
+      setFocusOptions([]);
+      return;
+    }
+    api.getCategoryStructure(selectedCategory.id).then((res) => {
+      if (res.structure) {
+        const keys = Object.keys(res.structure).filter((k) => k !== 'total');
+        setFocusOptions(keys);
+      }
+    }).catch(() => setFocusOptions([]));
+  }, [selectedCategory]);
 
   const handleCategoryClick = (category) => {
     setSelectedCategory(category);
@@ -60,8 +77,8 @@ function CategorySelector({ onStart }) {
   return (
     <div className="category-selector">
       <header className="selector-header">
-        <h1>🤖 AI Interview Prep Agent</h1>
-        <p>Practice with real FAANG questions • Get instant AI feedback • Improve iteratively</p>
+        <h1>AI Interview Prep Agent</h1>
+        <p>Practice with real FAANG questions. Get instant AI feedback. Improve iteratively.</p>
       </header>
 
       <div className="categories-grid">
@@ -79,11 +96,11 @@ function CategorySelector({ onStart }) {
         ))}
       </div>
 
-      {selectedCategory && selectedCategory.focusOptions.length > 0 && (
+      {selectedCategory && focusOptions.length > 0 && (
         <div className="focus-selector">
           <h3>Select Focus Areas (optional):</h3>
           <div className="focus-chips">
-            {selectedCategory.focusOptions.map((focus) => (
+            {focusOptions.map((focus) => (
               <button
                 key={focus}
                 className={`focus-chip ${selectedFocus.includes(focus) ? 'selected' : ''}`}
@@ -110,22 +127,22 @@ function CategorySelector({ onStart }) {
           <div className="step">
             <span className="step-number">1</span>
             <h4>Real Questions</h4>
-            <p>AI searches Reddit, Glassdoor, LeetCode for verified FAANG questions</p>
+            <p>Questions sourced from FAANG interview banks (106 behavioral, 173 coding, 131 technical, 36 system design)</p>
           </div>
           <div className="step">
             <span className="step-number">2</span>
             <h4>Answer Freely</h4>
-            <p>Type, speak, or upload diagrams - AI asks follow-ups if incomplete</p>
+            <p>Type, speak, or upload diagrams - AI asks follow-ups like a real interviewer</p>
           </div>
           <div className="step">
             <span className="step-number">3</span>
             <h4>Get Feedback</h4>
-            <p>Instant scores (0-10) with strengths, improvements, and follow-up questions</p>
+            <p>Scored breakdown (0-10) with strengths, improvements, and follow-up questions</p>
           </div>
           <div className="step">
             <span className="step-number">4</span>
-            <h4>Iterate</h4>
-            <p>Practice unlimited questions, refine answers, track progress</p>
+            <h4>Track Progress</h4>
+            <p>Switch topics mid-session with dropdowns. Track coverage at every level.</p>
           </div>
         </div>
       </div>

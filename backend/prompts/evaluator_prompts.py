@@ -1,4 +1,9 @@
-def get_evaluator_prompt(category: str, question_data: dict, conversation_thread: list) -> str:
+"""System prompts for the Evaluator agent."""
+
+from __future__ import annotations
+
+
+def get_evaluator_prompt(category: str, question_data: dict, conversation_thread: list[dict[str, str]]) -> str:
     """Generate system prompt for Evaluator Agent."""
 
     # Build conversation history
