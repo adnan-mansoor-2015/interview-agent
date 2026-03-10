@@ -7,9 +7,10 @@ Copy ``.env.example`` to ``.env`` and fill in your API keys.
 from __future__ import annotations
 
 import os
+from pathlib import Path
 from dotenv import load_dotenv
 
-load_dotenv(override=True)
+load_dotenv(Path(__file__).parent / ".env", override=True)
 
 # ── LLM Provider ────────────────────────────────────────────────────
 LLM_PROVIDER = os.getenv("LLM_PROVIDER", "gemini")  # "gemini" or "anthropic"
